@@ -1,4 +1,7 @@
 # Woody Theme for [Visual Studio Code]():
+
+![Version](https://vsmarketplacebadge.apphb.com/version-short/seahyx.woody-theme.svg "Version")  ![Installs](https://vsmarketplacebadge.apphb.com/installs/seahyx.woody-theme.svg "Installs")  ![Ratings](https://vsmarketplacebadge.apphb.com/rating-short/seahyx.woody-theme.svg "Ratings")
+
 ![This text is supposed to be an image of the theme in action. If you can't see this image, you should probably call your ISP and unsubscribe for them, and just go out hiking instead. A better life choice.](/img/img-1.png "Normal coding conditions")
 
 ## Nature right on your screen
