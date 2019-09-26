@@ -1,7 +1,7 @@
 {
     "name": "woody",
     "displayName": "Woody",
-    "description": "Brown and woody. Just like real wood. But it's not real wood so go out and see some real wood. Morning wood not included.",
+    "description": "Brown, warm and, undoubtedly woody. Just like real wood. But it's not real wood so go out and see some real wood. Morning wood not included.",
     "version": "0.0.1",
     "engines": {
         "vscode": "^1.38.0"
