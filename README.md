@@ -5,11 +5,13 @@
 ![This text is supposed to be an image of the theme in action. If you can't see this image, you should probably call your ISP and unsubscribe for them, and just go out hiking instead. A better life choice.](/img/img-1.png "Normal coding conditions")
 
 ## Nature right on your screen
+
 Without the risk of venturing out into the cruel and dangerous outside world, you can enjoy the scenery of a dense forest right on your screen! Absolutely life-changing. Totally safe.
 
 ![This text is supposed to be the second image of the theme in action. Plant trees in VSCode and you'll achieve the same effect. Honest.](/img/img-2.png "With the command palette open")
 
 ## It's brown,
+
 >warm, and undoubtedly woody. With a tinge of amber and teal. Just like real wood. But it's not real wood so go out and see some real wood. Morning wood not included.
 
 Now, here's some more screenshots for your mindless consumption, because most people find reading an excrutiatingly stressful task.
@@ -23,6 +25,7 @@ You may have noticed italics have been kept to a minimum. On certain fonts, I fi
 ## Download and Install
 
 This extension is available in the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=seahyx.woody-theme "Link to marketplace"):
+
 1. On VS Code go to **View -> Command Palette**
 2. Then enter **Install Extension**
 3. Enter **Woody Theme**
@@ -33,6 +36,7 @@ This extension is available in the [Visual Studio Code Marketplace](https://mark
 If you find any bugs (not real creepy crawlies scurrying about your dirty behind) and any suggestions about new tree species or leaf colours to add to your favourite language, feel free to do so at [GitHub](https://github.com/seahyx/Woody-Theme). I will be most welcome to new tree planters.
 
 ## More information
+
 wOw, things that people may sometimes care about!
 
 This is a personal project. I found a striking lack of warm colour themes on the extension market. I don't understand. Why would people put so much on their screen, when in the end night comes and they decide to put a blue-light filter on their screen anyway? And what's with some text with absolutely no contrast with the background? Are you trying to make art or write code?
