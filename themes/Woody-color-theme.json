@@ -839,6 +839,28 @@
 			"settings": {
 				"foreground": "#b267e6"
 			}
-		}
+		},
+
+		// Latex Scopes
+		{
+			"scope": [
+				"punctuation.math.begin.bracket.curly",
+				"punctuation.math.end.bracket.curly",
+				"punctuation.definition.string.begin.tex",
+				"punctuation.definition.string.end.tex",
+				"constant.other.general.math.tex",
+			],
+			"settings": {
+				"foreground": "#808080"
+			}
+		},
+		{
+			"scope": [
+				"support.class.latex",
+			],
+			"settings": {
+				"foreground": "#DD89B1"
+			}
+		},
 	]
 }
