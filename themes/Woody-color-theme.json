@@ -320,6 +320,14 @@
 			}
 		},
 		{
+			"scope": [
+				"comment",
+			],
+			"settings": {
+				"foreground": "#919191",
+			}
+		},
+		{
 			"scope": "string.unquoted.preprocessor",
 			"settings": {
 				"foreground": "#a1a1a1",
@@ -774,6 +782,14 @@
 			],
 			"settings": {
 				"foreground": "#58b2dc"
+			}
+		},
+		{
+			"scope": [
+				"meta.link.inline.markdown"
+			],
+			"settings": {
+				"foreground": "#7e7e7e"
 			}
 		},
 		{

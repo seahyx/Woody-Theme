@@ -4,6 +4,10 @@ All notable changes to the "woody" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 1.5.2
+
+- Updated comment and link bracket colours.
+
 ## 1.5.0
 
 - Updated terminal colours
