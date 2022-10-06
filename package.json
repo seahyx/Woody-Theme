@@ -1,47 +1,47 @@
 {
-				"name": "woody-theme",
-				"displayName": "Woody Theme",
-				"description": "Brown, warm, and undoubtedly woody. With a tinge of amber and teal. Just like real wood. But it's not real wood so go out and see some real wood. Morning wood not included.",
-				"publisher": "seahyx",
-				"version": "1.5.2",
-				"engines": {
-								"vscode": "^1.38.0"
-				},
-				"galleryBanner": {
-								"color": "#1f1614",
-								"theme": "dark"
-				},
-				"categories": [
-								"Themes"
-				],
-				"keywords": [
-								"theme",
-								"color",
-								"dark",
-								"warm",
-								"brown",
-								"bear",
-								"natural",
-								"wood",
-								"forest"
-				],
-				"icon": "icon.png",
-				"repository": {
-								"type": "git",
-								"url": "https://github.com/seahyx/Woody-Theme.git"
-				},
-				"contributes": {
-								"themes": [
-												{
-																"label": "Woody",
-																"uiTheme": "vs-dark",
-																"path": "./themes/Woody-color-theme.json"
-												}
-								]
-				},
-				"homepage": "https://github.com/seahyx/Woody-Theme",
-				"bugs": {
-								"url": "https://github.com/seahyx/Woody-Theme",
-								"email": "seahyx@gmail.com"
-				}
+	"name": "woody-theme",
+	"displayName": "Woody Theme",
+	"description": "Brown, warm, and undoubtedly woody. With a tinge of amber and teal. Just like real wood. But it's not real wood so go out and see some real wood. Morning wood not included.",
+	"publisher": "seahyx",
+	"version": "1.5.3",
+	"engines": {
+		"vscode": "^1.38.0"
+	},
+	"galleryBanner": {
+		"color": "#1f1614",
+		"theme": "dark"
+	},
+	"categories": [
+		"Themes"
+	],
+	"keywords": [
+		"theme",
+		"color",
+		"dark",
+		"warm",
+		"brown",
+		"bear",
+		"natural",
+		"wood",
+		"forest"
+	],
+	"icon": "icon.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/seahyx/Woody-Theme.git"
+	},
+	"contributes": {
+		"themes": [
+			{
+				"label": "Woody",
+				"uiTheme": "vs-dark",
+				"path": "./themes/Woody-color-theme.json"
+			}
+		]
+	},
+	"homepage": "https://github.com/seahyx/Woody-Theme",
+	"bugs": {
+		"url": "https://github.com/seahyx/Woody-Theme",
+		"email": "seahyx@gmail.com"
+	}
 }
