@@ -1,6 +1,7 @@
 {
-	"name": "woody-theme",
-	"displayName": "Woody Theme",
+	"manifestVersion": 1,
+	"id": "woody-theme",
+	"name": "Woody Theme",
 	"description": "Brown, warm, and undoubtedly woody. With a tinge of amber and teal. Just like real wood. But it's not real wood so go out and see some real wood. Morning wood not included.",
 	"publisher": "seahyx",
 	"version": "1.5.5",
@@ -11,9 +12,7 @@
 		"color": "#1f1614",
 		"theme": "dark"
 	},
-	"categories": [
-		"Themes"
-	],
+	"categories": ["Themes"],
 	"keywords": [
 		"theme",
 		"color",
