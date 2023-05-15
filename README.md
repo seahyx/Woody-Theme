@@ -1,7 +1,5 @@
 # Woody Theme for [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=seahyx.woody-theme "Link to marketplace"):
 
-![Version](https://vsmarketplacebadges.dev/version-short/seahyx.woody-theme.svg "Version") ![Downloads](https://vsmarketplacebadges.dev/downloads-short/seahyx.woody-theme.svg "Downloads") ![Ratings](https://vsmarketplacebadges.dev/rating-short/seahyx.woody-theme.svg "Ratings")
-
 ![This text is supposed to be an image of the theme in action. If you can't see this image, you should probably call your ISP and unsubscribe for them, and just go out hiking instead. A better life choice.](/img/img-1.png "Normal coding conditions")
 
 ## Nature right on your screen

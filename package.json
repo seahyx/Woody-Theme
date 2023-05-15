@@ -3,7 +3,7 @@
 	"displayName": "Woody Theme",
 	"description": "Brown, warm, and undoubtedly woody. With a tinge of amber and teal. Just like real wood. But it's not real wood so go out and see some real wood. Morning wood not included.",
 	"publisher": "seahyx",
-	"version": "1.5.6",
+	"version": "1.5.7",
 	"engines": {
 		"vscode": "^1.38.0"
 	},
