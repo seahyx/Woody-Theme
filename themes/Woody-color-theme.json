@@ -859,6 +859,15 @@
 			"settings": {
 				"foreground": "#DD89B1"
 			}
+		},
+
+		// C Scopes
+		{
+			"name": "C string placeholder characters",
+			"scope": "constant.other.placeholder.c",
+			"settings": {
+				"foreground": "#7ee37e"
+			}
 		}
 	]
 }
