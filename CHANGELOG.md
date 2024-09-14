@@ -4,6 +4,10 @@ All notable changes to the "woody" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 1.5.8
+
+Reduced the intensity of hover highlight backgrounds
+
 ## 1.5.7
 
 Removed marketplace badges entirely because VS marketplace
