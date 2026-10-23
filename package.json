@@ -3,7 +3,14 @@
 	"displayName": "Woody Theme",
 	"description": "Brown, warm, and undoubtedly woody. With a tinge of amber and teal. Just like real wood. But it's not real wood so go out and see some real wood. Morning wood not included.",
 	"publisher": "seahyx",
-	"version": "1.5.8",
+	"version": "1.6.0",
+	"scripts": {
+		"build": "node scripts/build.mjs",
+		"watch": "node --watch scripts/build.mjs",
+		"check": "node scripts/build.mjs --check",
+		"vscode:prepublish": "npm run build",
+		"package": "npx @vscode/vsce package"
+	},
 	"engines": {
 		"vscode": "^1.38.0"
 	},
@@ -41,7 +48,7 @@
 	},
 	"homepage": "https://github.com/seahyx/Woody-Theme",
 	"bugs": {
-		"url": "https://github.com/seahyx/Woody-Theme",
+		"url": "https://github.com/seahyx/Woody-Theme/issues",
 		"email": "seahyx@gmail.com"
 	}
 }

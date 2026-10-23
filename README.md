@@ -1,12 +1,12 @@
 # Woody Theme for [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=seahyx.woody-theme "Link to marketplace"):
 
-![This text is supposed to be an image of the theme in action. If you can't see this image, you should probably call your ISP and unsubscribe for them, and just go out hiking instead. A better life choice.](/img/img-1.png "Normal coding conditions")
+![This text is supposed to be an image of the theme in action. If you can't see this image, you should probably call your ISP and unsubscribe for them, and just go out hiking instead. A better life choice.](img/img-1.png "Normal coding conditions")
 
 ## Nature right on your screen
 
 Without the risk of venturing out into the cruel and dangerous outside world, you can enjoy the scenery of a dense forest right on your screen! Absolutely life-changing. Totally safe.
 
-![This text is supposed to be the second image of the theme in action. Plant trees in VSCode and you'll achieve the same effect. Honest.](/img/img-2.png "With the command palette open")
+![This text is supposed to be the second image of the theme in action. Plant trees in VSCode and you'll achieve the same effect. Honest.](img/img-2.png "With the command palette open")
 
 ## It's brown,
 
@@ -14,11 +14,11 @@ Without the risk of venturing out into the cruel and dangerous outside world, yo
 
 Now, here's some more screenshots for your mindless consumption, because most people find reading an excrutiatingly stressful task.
 
-![Frankly, your internet sucks.](/img/img-3.png "The Find/Replace and Terminal panel")
+![Frankly, your internet sucks.](img/img-3.png "The Find/Replace and Terminal panel")
 
 You may have noticed italics have been kept to a minimum. On certain fonts, I find them rather distracting. The different colours help to differentiate terms more comfortably to the eye.
 
-![Or you just happened to get the short end of the stick of internet bandwidth. I think some guy working in your ISP probably was like, 'I don't like this IP address, let's just give it half a wire of bandwidth.' and laughed about it.](/img/img-4.png "The settings page")
+![Or you just happened to get the short end of the stick of internet bandwidth. I think some guy working in your ISP probably was like, 'I don't like this IP address, let's just give it half a wire of bandwidth.' and laughed about it.](img/img-4.png "The settings page")
 
 ## Download and Install
 
@@ -32,6 +32,16 @@ This extension is available in the [Visual Studio Code Marketplace](https://mark
 ## Improvements and Contribution
 
 If you find any bugs (not real creepy crawlies scurrying about your dirty behind) and any suggestions about new tree species or leaf colours to add to your favourite language, feel free to do so at [GitHub](https://github.com/seahyx/Woody-Theme). I will be most welcome to new tree planters.
+
+## Development
+
+The theme file in `themes/` is generated, so don't edit it directly. Edit these sources instead:
+
+-   `src/palette.mjs`: every colour, named once. Change one here and it changes everywhere it is used.
+-   `src/colors.mjs`: workbench (UI) colours.
+-   `src/tokens.mjs`: syntax highlighting.
+
+Run `npm run watch`, then press F5 to open an Extension Development Host. The theme reloads every time you save a source file. `npm run build` regenerates the theme once, and `npm run package` builds the `.vsix`. Only Node.js is needed. There are no dependencies to install.
 
 ## More information
 

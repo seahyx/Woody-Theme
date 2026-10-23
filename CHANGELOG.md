@@ -4,6 +4,17 @@ All notable changes to the "woody" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 1.6.0
+
+-   The theme is now generated from a named colour palette (`src/`), so each colour is defined once
+-   Enabled semantic highlighting: namespaces, enum members and deprecated symbols are coloured more accurately
+-   Themed UI that still used VS Code's default blue and grey: buttons, badges, dropdowns, checkboxes, peek view, bracket pair colours, git decorations, gutter and diff colours, symbol icons, inlay hints and more
+-   Replaced leftover default syntax colours (Python dictionary keys, Markdown markers, diff and git-rebase tokens, CSS selectors) with Woody palette colours
+-   Fixed the unreadable navy `header` scope, the invisible character under the terminal block cursor, and white-on-amber badges that were hard to read
+-   Bright terminal colours are now lighter than the normal ones instead of identical
+-   Hover widgets now use the wood background instead of navy
+-   Much smaller extension package (screenshots are no longer bundled)
+
 ## 1.5.8
 
 Reduced the intensity of hover highlight backgrounds
