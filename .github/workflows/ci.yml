@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
+        with:
+          pixi-version: v0.83.0
+          cache: true
+          locked: true
+
+      - name: Run prek hooks
+        run: pixi run lint --show-diff-on-failure
+
+      - name: Package extension
+        run: pixi run package
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: vsix
+          path: '*.vsix'
+          if-no-files-found: error
+
+  # semantic-release reads the commits since the last tag. On a feat, fix or
+  # breaking change it bumps the version, updates CHANGELOG.md, commits them back
+  # with [skip ci], tags the commit, publishes to the Marketplace and creates the
+  # GitHub Release with the .vsix attached. Other commit types release nothing.
+  release:
+    needs: check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    environment: marketplace
+    concurrency:
+      group: release
+      cancel-in-progress: false
+    permissions:
+      contents: write # push the release commit and tag, create the GitHub Release
+      issues: write # comment on issues fixed by the release
+      pull-requests: write # comment on pull requests included in the release
+      id-token: write # sign in to Azure with OIDC to publish to the Marketplace
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
+        with:
+          pixi-version: v0.83.0
+          cache: true
+          locked: true
+
+      - uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          allow-no-subscriptions: true
+
+      - name: Install dependencies
+        run: pixi run deps
+
+      - name: Verify dependency signatures
+        run: pixi run npm audit signatures
+
+      - name: Release
+        run: pixi run npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VSCE_AZURE_CREDENTIAL: 'true'

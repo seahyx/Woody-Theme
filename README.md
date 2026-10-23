@@ -41,7 +41,26 @@ The theme file in `themes/` is generated, so don't edit it directly. Edit these 
 -   `src/colors.mjs`: workbench (UI) colours.
 -   `src/tokens.mjs`: syntax highlighting.
 
-Run `npm run watch`, then press F5 to open an Extension Development Host. The theme reloads every time you save a source file. `npm run build` regenerates the theme once, and `npm run package` builds the `.vsix`. Only Node.js is needed. There are no dependencies to install.
+The tools (Node.js and [prek](https://prek.j178.dev)) are pinned with [pixi](https://pixi.sh) and downloaded the first time a task runs. Install pixi, then use these commands:
+
+-   `pixi run hooks`: sets up the git hooks. Run it once after cloning.
+-   `pixi run watch`: regenerates the theme on every save. Press F5 to open an Extension Development Host, and the theme reloads every time you save a source file.
+-   `pixi run build`: regenerates the theme once.
+-   `pixi run package`: builds the `.vsix`.
+-   `pixi run lint`: runs every hook on every file.
+
+If you already have Node.js, `npm run build` and `npm run watch` do the same thing, and `npm run package` works after `npm ci`. The npm packages are only release tooling. The extension itself has no dependencies.
+
+### Commits and releases
+
+Commit messages follow [Conventional Commits](https://www.conventionalcommits.org), and the commit hook rejects any that don't. The type decides the next version:
+
+-   `fix:` for colour corrections bumps the patch version.
+-   `feat:` for newly themed UI or syntax bumps the minor version.
+-   `feat!:`, or a `BREAKING CHANGE:` footer, for something like a palette overhaul bumps the major version.
+-   `docs:`, `chore:`, `ci:`, `refactor:` and the like don't trigger a release.
+
+Releases are automatic. When a push to `master` contains a `fix`, `feat` or breaking change and the checks pass, [semantic-release](https://github.com/semantic-release/semantic-release) bumps the version and updates `CHANGELOG.md` in a `chore(release)` commit. It then tags the commit, publishes the extension to the Marketplace and creates a GitHub Release with the `.vsix` attached.
 
 ## More information
 

@@ -1,0 +1,39 @@
+# Git hooks, run by prek (https://prek.j178.dev). Install them with `pixi run hooks`.
+
+minimum_prek_version = "0.5.7"
+default_install_hook_types = ["pre-commit", "commit-msg"]
+exclude = '^(pixi\.lock|package-lock\.json)$'
+
+[[repos]]
+repo = "builtin"
+hooks = [
+	{ id = "trailing-whitespace", args = ["--markdown-linebreak-ext=md"] },
+	{ id = "end-of-file-fixer" },
+	{ id = "check-merge-conflict" },
+	{ id = "check-case-conflict" },
+	{ id = "check-added-large-files" },
+	{ id = "check-yaml" },
+	{ id = "check-toml" },
+	# .vscode/*.json and the generated theme start with // comments.
+	{ id = "check-json", exclude = '^(\.vscode/|themes/)' },
+	{ id = "check-jsonc", types = ["json"], files = '^(\.vscode/|themes/)' },
+]
+
+# Regenerates the theme when its sources change. If the output differs, the hook
+# fails so the updated theme can be staged with the commit.
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "build-theme"
+name = "build theme"
+language = "system"
+entry = "pixi run --frozen node scripts/build.mjs"
+pass_filenames = false
+files = '^(src/|scripts/build\.mjs$|themes/)'
+
+# release-please reads these messages to pick the next version and write the changelog.
+[[repos]]
+repo = "https://github.com/compilerla/conventional-pre-commit"
+rev = "v4.4.0"
+hooks = [{ id = "conventional-pre-commit", stages = ["commit-msg"] }]

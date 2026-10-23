@@ -1,7 +1,14 @@
 .vscode/**
 .vscode-test/**
+.github/**
+.pixi/**
+node_modules/**
 .gitignore
 .gitattributes
+.releaserc.json
+pixi.toml
+pixi.lock
+prek.toml
 vsc-extension-quickstart.md
 src/**
 scripts/**

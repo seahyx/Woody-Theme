@@ -9,7 +9,7 @@
 		"watch": "node --watch scripts/build.mjs",
 		"check": "node scripts/build.mjs --check",
 		"vscode:prepublish": "npm run build",
-		"package": "npx @vscode/vsce package"
+		"package": "vsce package"
 	},
 	"engines": {
 		"vscode": "^1.38.0"
@@ -50,5 +50,13 @@
 	"bugs": {
 		"url": "https://github.com/seahyx/Woody-Theme/issues",
 		"email": "seahyx@gmail.com"
+	},
+	"devDependencies": {
+		"@semantic-release/changelog": "^7.0.0",
+		"@semantic-release/git": "^11.0.1",
+		"@vscode/vsce": "^4.0.0",
+		"conventional-changelog-conventionalcommits": "^9.3.1",
+		"semantic-release": "^25.0.9",
+		"semantic-release-vsce": "^6.1.8"
 	}
 }
