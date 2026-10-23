@@ -1,8 +1,7 @@
 // Syntax highlighting: TextMate token rules and semantic token rules.
 //
-// When two rules match a token, the one with the more specific selector wins,
-// so the order of rules below only matters for identical selectors. The build
-// warns about those, so every selector appears at most once per property.
+// When two rules match a token, the one with the more specific selector wins, so the order of rules below only matters for identical selectors.
+// The build warns about those, so every selector appears at most once per property.
 
 import { accent, neutral, syntax } from './palette.mjs';
 
@@ -234,8 +233,7 @@ export const tokenColors = [
 	rule('Debug', 'token.debug-token', { foreground: magenta }),
 ];
 
-// Semantic tokens fall back to the TextMate rules above via VS Code's built-in
-// mapping (e.g. `function` → entity.name.function), so only gaps are filled here.
+// Semantic tokens fall back to the TextMate rules above via VS Code's built-in mapping (e.g. `function` → entity.name.function), so only gaps are filled here.
 export const semanticTokenColors = {
 	namespace: aqua,
 	enumMember: magenta,

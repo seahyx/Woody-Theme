@@ -1,9 +1,7 @@
 name: Marketplace identity
 
-# One-off setup step. Prints the Azure DevOps profile ID of the managed identity
-# that the release job signs in as. Add that ID as a Contributor member of the
-# seahyx publisher at https://marketplace.visualstudio.com/manage, then delete
-# this workflow.
+# One-off setup step. Prints the Azure DevOps profile ID of the managed identity that the release job signs in as.
+# Add that ID as a Contributor member of the seahyx publisher at https://marketplace.visualstudio.com/manage, then delete this workflow.
 
 on: workflow_dispatch
 
@@ -15,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: marketplace
     steps:
-      - uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+      - uses: azure/login@v3.1.0
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}

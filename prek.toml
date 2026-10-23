@@ -19,8 +19,7 @@ hooks = [
 	{ id = "check-jsonc", types = ["json"], files = '^(\.vscode/|themes/)' },
 ]
 
-# Regenerates the theme when its sources change. If the output differs, the hook
-# fails so the updated theme can be staged with the commit.
+# Regenerates the theme when its sources change. If the output differs, the hook fails so the updated theme can be staged with the commit.
 [[repos]]
 repo = "local"
 
@@ -32,7 +31,7 @@ entry = "pixi run --frozen node scripts/build.mjs"
 pass_filenames = false
 files = '^(src/|scripts/build\.mjs$|themes/)'
 
-# release-please reads these messages to pick the next version and write the changelog.
+# semantic-release reads these messages to pick the next version and write the changelog.
 [[repos]]
 repo = "https://github.com/compilerla/conventional-pre-commit"
 rev = "v4.4.0"

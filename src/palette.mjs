@@ -1,8 +1,7 @@
 // Woody colour palette.
 //
-// Two layers: raw colours named for what they are, then role tokens named for
-// what they do. src/colors.mjs and src/tokens.mjs only reference these, so a
-// change here flows through the whole theme on the next `npm run build`.
+// Two layers: raw colours named for what they are, then role tokens named for what they do.
+// src/colors.mjs and src/tokens.mjs only reference these, so a change here flows through the whole theme on the next `npm run build`.
 
 const toHex = (n) => Math.round(n).toString(16).padStart(2, '0');
 const toRgb = (color) => [1, 3, 5].map((i) => parseInt(color.slice(i, i + 2), 16));

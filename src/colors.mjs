@@ -1,7 +1,6 @@
 // Workbench (UI) colours, grouped by area.
 //
-// Keys whose VS Code default is already derived from a colour set here (e.g.
-// quickInput.background falls back to editorWidget.background) are left out.
+// Keys whose VS Code default is already derived from a colour set here (e.g. quickInput.background falls back to editorWidget.background) are left out.
 
 import { accent, alpha, ansi, mix, neutral, role, syntax, wood } from './palette.mjs';
 

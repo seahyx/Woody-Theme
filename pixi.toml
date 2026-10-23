@@ -1,6 +1,5 @@
-# Development toolchain. package.json is still the extension manifest and holds
-# the build scripts; these tasks just run them with the pinned Node.js.
-# No version here: release-please bumps the one in package.json.
+# Development toolchain. package.json is still the extension manifest and holds the build scripts; these tasks just run them with the pinned Node.js.
+# No version here: semantic-release bumps the one in package.json.
 
 [workspace]
 name = "woody-theme"
