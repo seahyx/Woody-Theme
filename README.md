@@ -31,26 +31,6 @@ Without the risk of venturing out into the cruel and dangerous outside world, yo
 
 > warm, and undoubtedly woody. With a tinge of amber and teal. Just like real wood. But it's not real wood so go out and see some real wood. Morning wood not included.
 
-<p align="center">
-<img src="https://img.shields.io/badge/bark-%231b0000-1b0000?style=flat-square&labelColor=1b0000" alt="bark #1b0000">
-<img src="https://img.shields.io/badge/base-%231f1614-1f1614?style=flat-square&labelColor=1f1614" alt="base #1f1614">
-<img src="https://img.shields.io/badge/surface-%23301e1b-301e1b?style=flat-square&labelColor=301e1b" alt="surface #301e1b">
-<img src="https://img.shields.io/badge/faded-%236a4f4b-6a4f4b?style=flat-square&labelColor=6a4f4b" alt="faded #6a4f4b">
-<br>
-<img src="https://img.shields.io/badge/%20-amber%20%23ffa000-1f1614?style=flat-square&labelColor=ffa000" alt="amber #ffa000">
-<img src="https://img.shields.io/badge/%20-teal%20%23007966-1f1614?style=flat-square&labelColor=007966" alt="teal #007966">
-<img src="https://img.shields.io/badge/%20-teal%20light%20%2348a999-1f1614?style=flat-square&labelColor=48a999" alt="teal light #48a999">
-<br>
-<img src="https://img.shields.io/badge/%20-blue%20%2358b2dc-1f1614?style=flat-square&labelColor=58b2dc" alt="blue #58b2dc">
-<img src="https://img.shields.io/badge/%20-aqua%20%234ec9b0-1f1614?style=flat-square&labelColor=4ec9b0" alt="aqua #4ec9b0">
-<img src="https://img.shields.io/badge/%20-gold%20%23dc9e58-1f1614?style=flat-square&labelColor=dc9e58" alt="gold #dc9e58">
-<img src="https://img.shields.io/badge/%20-yellow%20%23dda52d-1f1614?style=flat-square&labelColor=dda52d" alt="yellow #dda52d">
-<img src="https://img.shields.io/badge/%20-green%20%237fbd5b-1f1614?style=flat-square&labelColor=7fbd5b" alt="green #7fbd5b">
-<img src="https://img.shields.io/badge/%20-orange%20%23e6844f-1f1614?style=flat-square&labelColor=e6844f" alt="orange #e6844f">
-<img src="https://img.shields.io/badge/%20-rose%20%23dd89b1-1f1614?style=flat-square&labelColor=dd89b1" alt="rose #dd89b1">
-<img src="https://img.shields.io/badge/%20-magenta%20%23dc589a-1f1614?style=flat-square&labelColor=dc589a" alt="magenta #dc589a">
-</p>
-
 Now, here's some more screenshots for your mindless consumption, because most people find reading an excruciatingly stressful task.
 
 ![Frankly, your internet sucks.](img/img-3.png "The Find/Replace and Terminal panel")
