@@ -141,7 +141,7 @@
 		"editorWarning.foreground": "#e6844f",
 		"editorInfo.foreground": "#58b2dc",
 		"editorWidget.background": "#301e1b",
-		"editorWidget.border": "#ffa000",
+		"editorWidget.border": "#ffa00066",
 		"editorWidget.resizeBorder": "#ffa000",
 		"editorHoverWidget.background": "#301e1b",
 		"editorSuggestWidget.highlightForeground": "#ffa000",

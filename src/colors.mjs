@@ -174,7 +174,7 @@ export default {
 
 	// Editor widgets (hover, suggest, find, peek)
 	'editorWidget.background': wood.surface,
-	'editorWidget.border': amber,
+	'editorWidget.border': alpha(amber, 0.4),
 	'editorWidget.resizeBorder': amber,
 	'editorHoverWidget.background': wood.surface,
 	'editorSuggestWidget.highlightForeground': amber,
