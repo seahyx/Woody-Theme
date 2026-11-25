@@ -1,0 +1,132 @@
+/*
+ * build.gradle: Gradle (Groovy DSL) build for the fictional Woody Lumber Yard inventory service, used to preview the Woody theme's Groovy highlighting.
+ * Demonstrates: plugins {}, group/version, repositories, dependency configurations, a Java toolchain, ext {} properties, map and list literals, def locals, closures, GString interpolation, custom tasks with doLast, test { useJUnitPlatform() } and both comment styles.
+ */
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'jacoco'
+    id 'org.springframework.boot' version '3.3.5' apply false
+}
+
+group = 'com.example.woody'
+version = '2.1.0-SNAPSHOT'
+description = 'Stock, survey and sawmill tracking for the Woody Lumber Yard'
+
+// Shared versions and settings, readable anywhere in the build as properties.
+ext {
+    junitVersion = '5.11.3'
+    jacksonVersion = '2.18.1'
+    moistureLimit = 20.0
+    isCi = System.getenv('CI') != null
+    speciesCodes = [OK: 'Quercus robur', PN: 'Pinus sylvestris', SB: 'Betula pendula', DF: 'Pseudotsuga menziesii']
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    withSourcesJar()
+}
+
+application {
+    mainClass = 'com.example.woody.InventoryApp'
+    applicationDefaultJvmArgs = ['-Xmx512m', "-Dwoody.moisture.limit=${moistureLimit}"]
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'woodyInternal'
+        url = uri('https://repo.example.com/maven2')
+        credentials {
+            username = findProperty('woodyRepoUser') ?: ''
+            password = findProperty('woodyRepoKey') ?: ''
+        }
+    }
+}
+
+dependencies {
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.16'
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+    runtimeOnly 'org.postgresql:postgresql:42.7.4'
+
+    testImplementation platform("org.junit:junit-bom:${junitVersion}")
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Xlint:unchecked', '-Xlint:deprecation']
+}
+
+test {
+    useJUnitPlatform()
+    maxParallelForks = Math.max(1, Runtime.runtime.availableProcessors().intdiv(2))
+    systemProperty 'woody.sensor.url', 'https://sensors.example.org/api'
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat = 'full'
+    }
+    finalizedBy jacocoTestReport
+}
+
+/*
+ * Custom tasks
+ * ------------
+ * Values are captured into locals at configuration time so the actions stay configuration-cache friendly.
+ */
+
+tasks.register('speciesReport') {
+    group = 'woody'
+    description = 'Prints the species codes recognised in sawmill batch IDs.'
+
+    def codes = project.speciesCodes
+    def projectName = project.name
+    def reportFile = layout.buildDirectory.file('reports/species.txt')
+    outputs.file(reportFile)
+
+    doLast {
+        def lines = codes.collect { code, latin -> "SM-YYYY-${code}  ${latin}" }.sort()
+        def header = """\
+            |Species report for ${projectName}
+            |Generated: ${new Date().format('yyyy-MM-dd HH:mm')}
+            |Codes: ${codes.size()}
+            |""".stripMargin()
+
+        reportFile.get().asFile.text = header + lines.join('\n') + '\n'
+        println "Wrote ${lines.size()} species to ${reportFile.get().asFile.name}"
+    }
+}
+
+tasks.register('checkBatchIds') {
+    group = 'verification'
+    description = 'Fails if any sample batch file name is not a valid batch ID.'
+
+    def batchDir = layout.projectDirectory.dir('src/test/resources/batches')
+    def pattern = ~/^SM-\d{4}-(OK|PN|SB|DF)\.csv$/
+    inputs.dir(batchDir)
+
+    doLast {
+        def bad = batchDir.asFile.listFiles()?.findAll { !(it.name ==~ pattern) } ?: []
+        if (bad) {
+            throw new GradleException("Invalid batch file names: ${bad*.name.join(', ')}")
+        }
+        logger.lifecycle('All {} batch files are valid.', batchDir.asFile.list()?.length ?: 0)
+    }
+}
+
+tasks.named('check') {
+    dependsOn 'checkBatchIds'
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = isCi
+        html.required = true
+    }
+}

@@ -1,0 +1,73 @@
+// settings.jsonc — workspace settings for the fictional woody-inventory project, in the style of a VS Code settings.json.
+// Demonstrates JSON with comments: line and block comments, nested objects, arrays, null and trailing commas.
+{
+	/* ---------- Editor ---------- */
+	"editor.fontFamily": "'Cascadia Code', Consolas, 'Courier New', monospace",
+	"editor.fontSize": 14,
+	"editor.lineHeight": 1.6,
+	"editor.fontLigatures": true,
+	"editor.tabSize": 4,
+	"editor.insertSpaces": false,
+	"editor.rulers": [80, 120],
+	"editor.renderWhitespace": "boundary",
+	"editor.minimap.enabled": false,
+	"editor.bracketPairColorization.enabled": true,
+	"editor.guides.bracketPairs": "active",
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "explicit",
+		"source.fixAll": "never", // run fixes on demand instead of on every save
+	},
+
+	/* ---------- Workbench ---------- */
+	"workbench.colorTheme": "Woody",
+	"workbench.tree.indent": 16,
+	"workbench.colorCustomizations": {
+		"[Woody]": {
+			"editorRuler.foreground": "#5c4a3a80",
+			"statusBar.background": "#3b2f25",
+		},
+	},
+
+	/* ---------- Files ---------- */
+	"files.eol": "\n",
+	"files.trimTrailingWhitespace": true,
+	"files.insertFinalNewline": true,
+	"files.exclude": {
+		"**/__pycache__": true,
+		"**/.pixi": true,
+		"**/node_modules": true,
+	},
+	"files.associations": {
+		"*.plot": "yaml",
+		"git-rebase-todo": "git-rebase",
+	},
+	"[markdown]": {
+		"files.trimTrailingWhitespace": false,
+		"editor.wordWrap": "on",
+	},
+
+	/*
+	 * ---------- woody-inventory ----------
+	 * Read by the project's task runner, not by VS Code itself.
+	 */
+	"woodyInventory.apiBaseUrl": "https://inventory.example.com/api/v2",
+	"woodyInventory.apiToken": "change-me",
+	"woodyInventory.defaultSite": "SITE-NORTH",
+	"woodyInventory.units": "metric",
+	"woodyInventory.moistureAlertPercent": 19.5,
+	"woodyInventory.minTemperatureC": -5,
+	"woodyInventory.retryDelaysMs": [250, 500, 1000, 2000],
+	"woodyInventory.proxy": null, // null means connect directly
+	"woodyInventory.species": {
+		"preferred": ["Quercus robur", "Pinus sylvestris", "Betula pendula"],
+		"hidden": [],
+	},
+	"woodyInventory.export": {
+		"directory": "C:\\woody\\exports",
+		"delimiter": ",",
+		"quoteChar": "\"",
+		"compress": false,
+	},
+	// "woodyInventory.experimental.lidarImport": true,
+}

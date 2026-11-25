@@ -1,0 +1,224 @@
+/*
+ * css.css: stylesheet for the Woody Lumber Yard inventory dashboard, used to preview the Woody theme's CSS highlighting.
+ * Demonstrates: @layer/@import/@font-face/@media (range syntax)/@supports/@container/@keyframes, every selector kind and combinator, pseudo-classes and pseudo-elements, custom properties with var() fallbacks, colour functions (rgb/hsl/oklch/color-mix), calc/clamp/min, gradients, many units, 3/6/8-digit hex, named colours, !important, grid, flex and native nesting.
+ */
+
+@layer reset, base, components;
+
+@import url("https://static.example.com/css/normalize.css") layer(reset);
+@import "print.css" print;
+
+@font-face {
+  font-family: "Grain Sans";
+  src: url("/fonts/grain-sans.woff2") format("woff2"), url("/fonts/grain-sans.woff") format("woff");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --bark: #5a3e2b;
+    --sap: #fc0;
+    --moss: hsl(96deg 32% 38%);
+    --lichen: oklch(78% 0.09 140);
+    --resin: rgb(201 122 36 / 0.85);
+    --shadow: #1a0f0880;
+    --radius: 0.375rem;
+    --gap: clamp(0.75rem, 2vw + 0.25rem, 1.5rem);
+    --rail-width: min(28ch, 100%);
+    --ease-grow: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    font: 400 100%/1.5 "Grain Sans", system-ui, sans-serif;
+    color-scheme: light dark;
+  }
+
+  body {
+    min-height: 100dvh;
+    margin: 0;
+    background: linear-gradient(160deg, #f6efe4 0%, color-mix(in oklch, var(--lichen) 25%, white) 100%);
+    color: var(--ink, #2b1d12);
+  }
+
+  ::selection {
+    background-color: var(--sap);
+    color: black;
+  }
+
+  a:any-link {
+    color: var(--moss);
+    text-underline-offset: 0.2em;
+  }
+
+  a:hover,
+  a:focus-visible {
+    color: var(--bark);
+    outline: 2px dashed currentColor;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Layout: a fixed-width rail beside a fluid main column. */
+  .dashboard {
+    display: grid;
+    grid-template-columns: var(--rail-width) 1fr;
+    grid-template-areas:
+      "header header"
+      "rail main";
+    gap: var(--gap);
+    padding-inline: 2rem;
+  }
+
+  #main {
+    grid-area: main;
+    container: stock / inline-size;
+  }
+
+  header > nav ul {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5em 1em;
+    list-style: none;
+  }
+
+  /* Adjacent and general sibling combinators. */
+  h2 + p {
+    margin-block-start: 0;
+    max-width: 65ch;
+  }
+
+  h2 ~ table {
+    margin-top: calc(var(--gap) * 1.5);
+  }
+
+  .stock {
+    width: 100%;
+    border-collapse: collapse;
+
+    & th,
+    & td {
+      padding: 0.5em 0.75em;
+      border-bottom: 1px solid #d9b38c;
+    }
+
+    & tbody tr:nth-child(2n + 1) {
+      background-color: rgb(90 62 43 / 6%);
+    }
+
+    & tr:not(:last-child, [hidden]):hover {
+      background-color: color-mix(in srgb, var(--sap) 20%, transparent);
+    }
+
+    & tr:is([data-species="oak"], [data-species="birch"]) td:first-child {
+      font-style: italic;
+    }
+
+    .dashboard--compact & {
+      font-size: 0.875em;
+    }
+  }
+
+  /* Attribute selectors: prefix, suffix, substring, whitespace list and case-insensitive. */
+  a[href^="https://"]::after {
+    content: " \2197";
+    font-size: 0.75em;
+  }
+
+  a[href$=".pdf" i]::before {
+    content: "PDF ";
+  }
+
+  [data-species*="pine"] {
+    border-inline-start: 4px solid forestgreen;
+  }
+
+  [class~="grade"][data-grade="C"] {
+    color: firebrick !important;
+  }
+
+  /* Only cards that actually contain a meter get the extra bottom padding. */
+  .plot-card:has(> meter) {
+    padding-bottom: 1.25rem;
+    border-radius: var(--radius);
+    box-shadow: 0 1px 2px var(--shadow), 0 0.5rem 1.5rem -0.75rem var(--shadow);
+    animation: grow 600ms var(--ease-grow) both;
+  }
+
+  input:is(:invalid, :user-invalid):not(:focus) {
+    border-color: #c0392b;
+  }
+
+  .btn {
+    padding: 0.6em 1.2em;
+    border: 0;
+    border-radius: 999px;
+    background-image: linear-gradient(to bottom right, var(--resin), #8b5a2bcc);
+    color: #fff;
+    transition: transform 150ms ease-out, filter 0.2s linear;
+
+    &:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    &[disabled] {
+      filter: grayscale(1) opacity(60%);
+      cursor: not-allowed;
+    }
+  }
+}
+
+@keyframes grow {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) rotate(-1deg);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+/* Media queries level 4 range syntax. */
+@media (width < 48em) {
+  .dashboard {
+    grid-template-columns: 1fr;
+    grid-template-areas: "header" "main" "rail";
+    padding-inline: 1rem;
+  }
+}
+
+@media (48em <= width <= 80em) and (orientation: landscape) {
+  .dashboard {
+    --rail-width: 22ch;
+  }
+}
+
+@supports (backdrop-filter: blur(4px)) and (not (display: contents)) {
+  header {
+    backdrop-filter: blur(4px) saturate(120%);
+  }
+}
+
+/* Container queries switch the stock table to a stacked layout in narrow columns. */
+@container stock (inline-size < 36rem) {
+  .stock thead {
+    display: none;
+  }
+
+  .stock td {
+    display: block;
+    height: auto;
+    min-height: 2.5vh;
+  }
+}

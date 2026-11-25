@@ -1,0 +1,113 @@
+{
+  "service": "woody-inventory",
+  "schemaVersion": 3,
+  "generatedAt": "2026-11-26T08:15:30.250Z",
+  "exportedBy": {
+    "tool": "woody-export",
+    "version": "2.4.1",
+    "host": "inventory-01.example.com",
+    "dryRun": false
+  },
+  "site": {
+    "id": "SITE-NORTH",
+    "name": "Northern Ridge Woodland",
+    "description": "Mixed broadleaf and conifer stand.\nA \"no-felling\" buffer runs 15 m either side of the stream.",
+    "location": {
+      "latitude": 54.401838,
+      "longitude": -2.966417,
+      "elevationMetres": 212.5
+    },
+    "areaHectares": 48.75,
+    "certified": true,
+    "manager": null,
+    "tags": ["mixed", "managed", "riparian-buffer"],
+    "mapUrl": "https://maps.example.org/?lat=54.401838&lon=-2.966417&zoom=15"
+  },
+  "species": [
+    {
+      "code": "QURO",
+      "commonName": "English oak",
+      "latinName": "Quercus robur",
+      "native": true,
+      "densityKgPerM3": 720,
+      "annualGrowthCm": 0.35
+    },
+    {
+      "code": "PISY",
+      "commonName": "Scots pine",
+      "latinName": "Pinus sylvestris",
+      "native": true,
+      "densityKgPerM3": 550,
+      "annualGrowthCm": 0.6
+    },
+    {
+      "code": "PSME",
+      "commonName": "Douglas fir",
+      "latinName": "Pseudotsuga menziesii",
+      "native": false,
+      "densityKgPerM3": 530,
+      "annualGrowthCm": 1.1
+    }
+  ],
+  "plots": [
+    {
+      "id": "P-001",
+      "surveyedOn": "2026-04-12",
+      "slopeDegrees": -4.5,
+      "canopyCover": 0.82,
+      "trees": [
+        { "tag": 1001, "species": "QURO", "dbhCm": 64.2, "heightM": 23.1, "healthy": true, "notes": "" },
+        { "tag": 1002, "species": "PISY", "dbhCm": 41.7, "heightM": 26.0, "healthy": true, "notes": "Resin pocket at 1.3 m" },
+        { "tag": 1003, "species": "BEPE", "dbhCm": 22.3, "heightM": 17.8, "healthy": false, "notes": "Bracket fungus, see photo \"IMG_0412\"" }
+      ],
+      "sensors": [
+        { "id": "MOIST-01", "unit": "percent", "lastReading": 18.6, "battery": 0.91 },
+        { "id": "TEMP-01", "unit": "celsius", "lastReading": -2.4, "battery": null }
+      ]
+    },
+    {
+      "id": "P-002",
+      "surveyedOn": "2026-04-13",
+      "slopeDegrees": 2,
+      "canopyCover": 0.67,
+      "trees": [
+        { "tag": 2001, "species": "PSME", "dbhCm": 72.9, "heightM": 38.5, "healthy": true, "notes": "Marked for felling" }
+      ],
+      "sensors": []
+    }
+  ],
+  "sawmill": {
+    "batches": [
+      {
+        "id": "SB-2026-014",
+        "receivedAt": "2026-05-02T07:45:00+01:00",
+        "sourceTrees": [2001],
+        "planks": 184,
+        "grades": { "A": 96, "B": 61, "C": 19, "reject": 8 },
+        "kilnDried": true,
+        "targetMoisturePercent": 12.0,
+        "yieldRatio": 5.82e-1
+      }
+    ]
+  },
+  "limits": {
+    "maxPlotsPerSite": 10000,
+    "minTemperatureC": -40,
+    "measurementToleranceM": 2.5E-3,
+    "maxStandVolumeM3": 1.2e+4,
+    "seedsPerKilogram": 1.65e5
+  },
+  "paths": {
+    "exportDir": "C:\\woody\\exports\\2026",
+    "unixExportDir": "/var/lib/woody/exports",
+    "plotIdPattern": "^P-\\d{3}$"
+  },
+  "i18n": {
+    "fieldNoteFr": "Relev\u00e9 pr\u00e8s du caf\u00e9 \u2014 v\u00e9rifier la sonde",
+    "degreeSign": "\u00b0C",
+    "tabbed": "species\tdbh\theight",
+    "escapedSlash": "plots\/P-001"
+  },
+  "pendingReviews": [],
+  "metadata": {}
+}

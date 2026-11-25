@@ -1,0 +1,42 @@
+2026-11-26T08:15:30.125Z INFO  [woody.main] Starting woody-inventory version=2.4.1 env=staging pid=4182 python=3.12.7
+2026-11-26T08:15:30.131Z DEBUG [woody.config] Loaded configuration path="/etc/woody/config.yaml" keys=42 overrides=3
+2026-11-26T08:15:30.140Z INFO  [woody.db.pool] Connecting to database host=db.internal.example.com port=5432 database=woody pool_min=2 pool_max=20
+2026-11-26T08:15:30.402Z INFO  [woody.db.pool] Connection pool ready connections=2 elapsed=262ms
+2026-11-26T08:15:30.418Z WARN  [woody.config] Deprecated setting "sensors.poll" found, use "sensors.poll_interval" instead
+2026-11-26T08:15:30.433Z INFO  [woody.cache] Connected to cache url=redis://cache.internal.example.com:6379/0 latency=1.8ms
+2026-11-26T08:15:30.511Z INFO  [woody.api.server] Listening on http://0.0.0.0:8080 workers=4 tls=false
+2026-11-26T08:15:31.007Z TRACE [woody.sensors.poller] Tick interval=60s sensors=12 next_run=2026-11-26T08:16:31Z
+2026-11-26T08:15:31.552Z INFO  [woody.api.access] 10.0.4.17 "GET /api/v2/plots?site=SITE-NORTH HTTP/1.1" 200 1843 12ms request_id=7f3c9a2e-5b1d-4e8a-9c6f-2d4b8e1a0c37
+2026-11-26T08:15:32.104Z INFO  [woody.api.access] 10.0.4.17 "GET /api/v2/plots/P-001/trees?limit=50 HTTP/1.1" 200 9312 38ms request_id=0b6e4d91-3a2f-47c8-b5e0-9f1d7c3a8e64
+2026-11-26T08:15:32.890Z DEBUG [woody.sensors.moisture] Reading received sensor=MOIST-01 plot=P-001 value=18.6 unit=percent calibrated=true
+2026-11-26T08:15:32.893Z DEBUG [woody.sensors.temperature] Reading received sensor=TEMP-02 plot=P-002 value=-2.4 unit=celsius calibrated=true
+2026-11-26T08:15:33.017Z WARNING [woody.sensors.moisture] Reading above alert threshold sensor=MOIST-03 plot=P-003 value=21.3 threshold=19.5
+2026-11-26T08:15:33.250Z INFO  [woody.sawmill.batches] Batch received batch=SB-2026-014 species="Pseudotsuga menziesii" planks=184 source=yard-2
+2026-11-26T08:15:34.871Z INFO  [woody.grading] Batch graded batch=SB-2026-014 A=96 B=61 C=19 reject=8 duration=1.62s
+2026-11-26T08:15:35.004Z INFO  [woody.api.access] 192.168.1.44 "POST /api/v2/batches/SB-2026-014/export HTTP/1.1" 202 64 5ms request_id=c41f8a07-6d2e-4b93-a1c5-38e7f0d29b16
+2026-11-26T08:15:35.312Z DEBUG [woody.export] Writing CSV path="/var/lib/woody/exports/SB-2026-014.csv" rows=184 compress=false
+2026-11-26T08:15:35.988Z INFO  [woody.export] Export finished batch=SB-2026-014 bytes=48211 elapsed=676ms
+2026-11-26T08:15:36.420Z WARN  [woody.api.access] 203.0.113.25 "GET /api/v2/plots/P-999 HTTP/1.1" 404 71 3ms request_id=5e92b3d4-0c7a-4f61-8d2b-a6f4e1c90753
+2026-11-26T08:15:37.009Z TRACE [woody.cache] Cache miss key="species:QURO" ttl=null
+2026-11-26T08:15:37.015Z TRACE [woody.cache] Cache set key="species:QURO" ttl=3600 size=412
+2026-11-26T08:15:38.733Z ERROR [woody.sensors.poller] Sensor timed out sensor=TEMP-05 plot=P-004 host=10.0.7.31 timeout=5s attempt=3 retry=false
+2026-11-26T08:15:39.114Z INFO  [woody.api.access] 10.0.4.17 "PATCH /api/v2/trees/T-1005 HTTP/1.1" 200 402 21ms request_id=9a7d2c58-e14b-4f0a-b3c6-72d8e5f1a049
+2026-11-26T08:15:40.502Z ERROR [woody.api.server] Unhandled exception while processing request request_id=e3b8f6a1-2c4d-4e7f-9a05-b1c6d8e2f374 method=POST path=/api/v2/plots/P-003/survey
+Traceback (most recent call last):
+  File "/app/src/woody_inventory/api/routes/plots.py", line 88, in submit_survey
+    survey = parse_survey(payload, plot_id=plot_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/woody_inventory/plots/parser.py", line 142, in parse_survey
+    trees = [_parse_tree(row) for row in payload["trees"]]
+             ^^^^^^^^^^^^^^^^
+  File "/app/src/woody_inventory/plots/parser.py", line 57, in _parse_tree
+    dbh_cm = float(row["dbh"])
+             ^^^^^^^^^^^^^^^^^
+ValueError: could not convert string to float: '64,2'
+2026-11-26T08:15:40.509Z INFO  [woody.api.access] 10.0.4.17 "POST /api/v2/plots/P-003/survey HTTP/1.1" 500 118 47ms request_id=e3b8f6a1-2c4d-4e7f-9a05-b1c6d8e2f374
+2026-11-26T08:15:45.230Z INFO  [woody.api.access] 10.0.4.22 "DELETE /api/v2/sessions/current HTTP/1.1" 401 52 2ms request_id=1d5c7e93-8b4a-4c2f-a6e1-0f9b3d7c5a28 user=null
+2026-11-26T08:15:52.018Z DEBUG [woody.scheduler] Job scheduled job=nightly-export cron="0 2 * * *" next_run=2026-11-27T02:00:00Z enabled=true
+2026-11-26T08:16:01.447Z WARN  [woody.db.pool] Slow query duration=1.5s rows=10000 statement="SELECT * FROM trees WHERE plot_code = $1"
+2026-11-26T08:16:31.004Z TRACE [woody.sensors.poller] Tick interval=60s sensors=12 next_run=2026-11-26T08:17:31Z
+2026-11-26T08:16:31.912Z FATAL [woody.db.pool] Lost connection to database host=db.internal.example.com error="connection reset by peer" reconnect=false
+2026-11-26T08:16:31.920Z INFO  [woody.main] Shutting down signal=SIGTERM uptime=61.8s exit_code=1

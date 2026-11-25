@@ -1,0 +1,217 @@
+// scss.scss: design tokens and components for the Woody Lumber Yard dashboard, used to preview the Woody theme's SCSS highlighting.
+// Demonstrates: @use/@forward, $variables with !default, maps and map.get, @mixin with defaults and @content, @include, @function/@return, @if/@else if/@else, @each, @for, @while, %placeholders and @extend, BEM nesting with &, #{} interpolation, @debug/@warn, math.div, // and /* */ comments, SassDoc /// comments.
+
+@use "sass:map";
+@use "sass:math";
+@use "sass:color";
+@use "sass:string";
+@forward "sass:list" show length, nth;
+
+/* ---------------------------------------------------------------------------
+   Tokens
+   --------------------------------------------------------------------------- */
+
+/// Base font size used for rem conversion.
+/// @type Number
+$base-font-size: 16px !default;
+
+/// Breakpoints, smallest first.
+/// @type Map
+$breakpoints: (
+  "sm": 36em,
+  "md": 48em,
+  "lg": 80em,
+) !default;
+
+/// Timber species and their swatch colours, keyed by short code.
+/// @type Map
+$species: (
+  "oak": (latin: "Quercus robur", colour: #8b5a2b, hardwood: true),
+  "pine": (latin: "Pinus sylvestris", colour: #d9b38c, hardwood: false),
+  "birch": (latin: "Betula pendula", colour: #efe6d2, hardwood: true),
+  "fir": (latin: "Pseudotsuga menziesii", colour: #a0522d, hardwood: false),
+);
+
+$bark: #5a3e2b;
+$moss: hsl(96, 32%, 38%);
+$radius: 0.375rem !default;
+$grade-steps: 4;
+$enable-debug: false;
+
+/* ---------------------------------------------------------------------------
+   Functions
+   --------------------------------------------------------------------------- */
+
+/// Converts a pixel value to rem relative to `$base-font-size`.
+/// @param {Number} $px - Size in pixels.
+/// @return {Number} Size in rem.
+/// @example scss
+///   padding: rem(24px); // 1.5rem
+@function rem($px) {
+  @if math.unit($px) != "px" {
+    @error "rem() expects a px value, got `#{$px}`.";
+  }
+
+  @return math.div($px, $base-font-size) * 1rem;
+}
+
+/// Picks a readable text colour for a given background.
+/// @param {Color} $bg - Background colour.
+/// @return {Color}
+@function text-on($bg) {
+  $lightness: color.channel($bg, "lightness", $space: hsl);
+
+  @if $lightness > 70% {
+    @return $bark;
+  } @else if $lightness > 40% {
+    @return #1a0f08;
+  } @else {
+    @return white;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Mixins
+   --------------------------------------------------------------------------- */
+
+/// Wraps content in a min-width media query for a named breakpoint.
+/// @param {String} $name - Key from `$breakpoints`.
+/// @content Rules to apply at and above the breakpoint.
+@mixin above($name) {
+  $min: map.get($breakpoints, $name);
+
+  @if not $min {
+    @warn "Unknown breakpoint `#{$name}`; falling back to no query.";
+    @content;
+  } @else {
+    @media (min-width: $min) {
+      @content;
+    }
+  }
+}
+
+/// Card surface with optional elevation.
+/// @param {Number} $depth [1] - Shadow depth, 0 to 3.
+/// @param {Color} $tint [$bark] - Shadow tint.
+@mixin surface($depth: 1, $tint: $bark) {
+  border-radius: $radius;
+  background-color: color.scale($tint, $lightness: 92%);
+
+  @if $depth > 0 {
+    box-shadow: 0 #{$depth}px #{$depth * 3}px rgba($tint, 0.08 * $depth);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Placeholders
+   --------------------------------------------------------------------------- */
+
+%visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+%tabular {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* ---------------------------------------------------------------------------
+   Components
+   --------------------------------------------------------------------------- */
+
+.plot-card {
+  @include surface(2);
+  padding: rem(16px) rem(20px);
+
+  &__name {
+    margin: 0 0 rem(8px);
+    font-size: math.div(18px, $base-font-size) * 1em;
+  }
+
+  &__count {
+    @extend %tabular;
+  }
+
+  &__label {
+    @extend %visually-hidden;
+  }
+
+  &--flagged {
+    border-left: 4px solid color.adjust($moss, $hue: 180deg);
+  }
+
+  &:hover,
+  &:focus-within {
+    @include surface(3);
+  }
+
+  .dashboard--compact & {
+    padding: rem(8px);
+  }
+
+  @include above("md") {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+}
+
+// One swatch and badge modifier per species, generated from the map.
+@each $code, $info in $species {
+  $swatch: map.get($info, colour);
+
+  .species--#{$code} {
+    background-color: $swatch;
+    color: text-on($swatch);
+
+    &::after {
+      content: " (#{map.get($info, latin)})";
+      font-style: italic;
+    }
+
+    @if map.get($info, hardwood) {
+      border-top: 2px solid color.adjust($swatch, $lightness: -15%);
+    }
+  }
+}
+
+// Grade colours fade from moss (grade 1) towards bark (grade N).
+@for $i from 1 through $grade-steps {
+  .grade-#{$i} {
+    $weight: math.percentage(math.div($i - 1, $grade-steps - 1));
+    color: color.mix($bark, $moss, $weight);
+    opacity: 1 - ($i - 1) * 0.1;
+  }
+}
+
+// Spacing scale doubles until it would exceed 64px.
+$step: 4px;
+$index: 0;
+
+@while $step <= 64px {
+  .gap-#{$index} {
+    gap: rem($step);
+  }
+
+  $step: $step * 2;
+  $index: $index + 1;
+}
+
+@if $enable-debug {
+  @debug "Generated #{$index} gap utilities; base font is #{$base-font-size}.";
+}
+
+.stock-table {
+  width: 100%;
+
+  td:nth-child(n + 3) {
+    @extend %tabular;
+  }
+
+  #{string.unquote("tr[data-species]")}:not(:last-child) {
+    border-bottom: 1px solid rgba($bark, 0.2);
+  }
+}

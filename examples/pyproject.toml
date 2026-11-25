@@ -1,0 +1,133 @@
+# pyproject.toml — packaging and tool configuration for the fictional woody-inventory service.
+# Demonstrates TOML: tables, dotted keys, arrays of tables, inline tables, basic/literal/multi-line strings, integers in decimal/hex/octal/binary, floats with exponents and inf/nan, booleans and all four date-time types.
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "woody-inventory"
+version = "2.4.1"
+description = "Track standing timber, survey plots and sawmill batches for a small woodland."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Woody Inventory Maintainers", email = "maintainers@example.com" },
+    { name = "Survey Team", email = "survey@example.org" },
+]
+keywords = ["forestry", "inventory", "timber", "sawmill"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: GIS",
+    "Typing :: Typed",
+]
+dependencies = [
+    "fastapi>=0.110",
+    "pydantic>=2.6,<3",
+    "sqlalchemy[asyncio]~=2.0",
+    "httpx>=0.27",
+    'colorama>=0.4; sys_platform == "win32"', # literal string, so the inner double quotes need no escaping
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.6"]
+lidar = ["laspy>=2.5", "numpy>=1.26"]
+
+[project.scripts]
+woody = "woody_inventory.cli:main"
+woody-grade = "woody_inventory.grading:run"
+
+[project.urls]
+Homepage = "https://woody-inventory.example.com"
+Documentation = "https://docs.example.com/woody-inventory/"
+Repository = "https://git.example.org/woody/woody-inventory.git"
+"Bug Tracker" = "https://git.example.org/woody/woody-inventory/issues" # quoted key because it contains a space
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+src = ["src", "tests"]
+extend-exclude = ["migrations/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["E501"]
+per-file-ignores = { "tests/**" = ["S101"], "scripts/*.py" = ["T201"] }
+
+[tool.ruff.lint.isort]
+known-first-party = ["woody_inventory"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra --strict-markers --cov=woody_inventory"
+testpaths = ["tests"]
+markers = [
+    "slow: tests that load full plot surveys",
+    "sensor: tests that talk to the sensor simulator",
+]
+filterwarnings = ['ignore:.*utcnow.*:DeprecationWarning']
+
+# Everything under [tool.example] is read by the app itself at start-up, not by any build tool.
+[tool.example]
+site = "SITE-NORTH"
+units.length = "metric" # dotted keys create a nested table
+units.temperature = "celsius"
+max-plots = 10_000
+sensor-mask = 0xDEAD_BEEF # hexadecimal
+upload-mode = 0o640 # octal
+grade-flags = 0b1011_0001 # binary
+moisture-target = 12.0
+min-temperature = -40
+tolerance-m = 2.5e-3
+max-stand-volume = 1.2E+4
+upper-limit = inf
+lower-limit = -inf
+missing-reading = nan
+auto-grade = true
+dry-run = false
+last-export = 2026-11-25T23:59:59.999+01:00 # offset date-time
+next-calibration = 2026-12-01T09:30:00 # local date-time
+next-survey = 2027-04-10 # local date
+nightly-run = 02:00:00 # local time
+export-dir = 'C:\woody\exports' # literal string: backslashes are not escapes
+greeting = "Caf\u00e9 path plots \u2014 tab\there, quote \" and backslash \\"
+report-footer = """
+Woody Inventory — internal use only.
+Contact: "inventory-team@example.com"\tExt. 42"""
+sql-template = '''
+SELECT plot_code, COUNT(*) AS trees
+FROM trees
+WHERE species = '{latin_name}' AND dbh_cm > 40
+GROUP BY plot_code;
+'''
+bbox = { north = 54.41, south = 54.39, east = -2.95, west = -2.98 }
+
+[[tool.example.plots]]
+id = "P-001"
+area-m2 = 400
+slope-deg = -4.5
+surveyed = 2026-04-12
+species = ["Quercus robur", "Pinus sylvestris"]
+
+[[tool.example.plots]]
+id = "P-002"
+area-m2 = 400
+slope-deg = +2.0
+surveyed = 2026-04-13
+species = ["Betula pendula", "Pseudotsuga menziesii"]
+centre = { lat = 54.401838, lon = -2.966417 }
+
+[[tool.example.plots]]
+id = "P-003"
+area-m2 = 625
+slope-deg = 0
+surveyed = 2026-04-15
+species = []

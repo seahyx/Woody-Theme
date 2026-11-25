@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!--
+  html.html: a single-page dashboard for the fictional Woody Lumber Yard, used to preview the Woody theme's HTML highlighting.
+  Demonstrates: doctype, meta/link tags, semantic sectioning elements, data-* and aria-* attributes, boolean attributes, character entities, a table, a form with many input types, <template>, inline <style>, an inline module <script>, an inline <svg> and comments.
+-->
+<html lang="en-GB" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Live stock levels, survey plots and sawmill batches for the Woody Lumber Yard.">
+    <meta name="theme-color" content="#3b2a1a" media="(prefers-color-scheme: dark)">
+    <title>Woody Lumber Yard &#8212; Inventory</title>
+    <link rel="stylesheet" href="https://static.example.com/css/yard.css" integrity="sha384-AbCdEf0123456789" crossorigin="anonymous">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://api.example.org">
+    <style>
+      :root {
+        --bark: #5a3e2b;
+        --moss: hsl(96 32% 38%);
+      }
+
+      .grade[data-grade="A"] {
+        color: var(--moss);
+        font-weight: 600;
+      }
+
+      table.stock td:nth-child(n + 3) {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+    </style>
+  </head>
+  <body class="yard dashboard" data-yard-id="WLY-01">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header role="banner">
+      <h1>Woody Lumber Yard <small>Inventory &amp; Grading</small></h1>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="#stock" aria-current="page">Stock</a></li>
+          <li><a href="#plots">Survey plots</a></li>
+          <li><a href="#intake">Batch intake</a></li>
+          <li><a href="https://docs.example.org/grading?lang=en&amp;edition=2026" target="_blank" rel="noopener noreferrer">Grading rules</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main">
+      <article id="stock" data-refresh-interval="30000">
+        <h2>Current stock</h2>
+        <p>Figures are in cubic metres (m&sup3;). Boards under 12&nbsp;% moisture are marked <abbr title="kiln dried">KD</abbr>; anything &lt; 8&nbsp;% or &gt; 20&nbsp;% is flagged for re-check.</p>
+
+        <table class="stock">
+          <caption>Seasoned timber by species, week 47</caption>
+          <thead>
+            <tr>
+              <th scope="col">Species</th>
+              <th scope="col">Latin name</th>
+              <th scope="col">Volume (m&sup3;)</th>
+              <th scope="col">Moisture</th>
+              <th scope="col">Grade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-species="oak">
+              <td>English oak</td>
+              <td><i lang="la">Quercus robur</i></td>
+              <td>42.75</td>
+              <td>11.4&nbsp;%</td>
+              <td class="grade" data-grade="A">A</td>
+            </tr>
+            <tr data-species="pine">
+              <td>Scots pine</td>
+              <td><i lang="la">Pinus sylvestris</i></td>
+              <td>118.20</td>
+              <td>14.9&nbsp;%</td>
+              <td class="grade" data-grade="B">B</td>
+            </tr>
+            <tr data-species="birch" hidden>
+              <td>Silver birch</td>
+              <td><i lang="la">Betula pendula</i></td>
+              <td>0.00</td>
+              <td>&mdash;</td>
+              <td class="grade" data-grade="C">C</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th scope="row" colspan="2">Total</th>
+              <td>160.95</td>
+              <td colspan="2"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </article>
+
+      <section id="plots" aria-labelledby="plots-heading">
+        <h2 id="plots-heading">Survey plots</h2>
+        <!-- Plot cards are cloned from the template below by the module script. -->
+        <ul class="plot-list" aria-live="polite"></ul>
+
+        <template id="plot-card">
+          <li class="plot-card">
+            <h3 class="plot-name"></h3>
+            <p>Trees tagged: <output class="tree-count">0</output></p>
+            <meter class="canopy" min="0" max="100" low="30" high="80" optimum="90" value="0"></meter>
+          </li>
+        </template>
+      </section>
+
+      <section id="intake">
+        <h2>Sawmill batch intake</h2>
+        <form action="https://api.example.org/v1/batches" method="post" autocomplete="off" novalidate>
+          <fieldset>
+            <legend>Batch details</legend>
+
+            <label for="batch-id">Batch ID</label>
+            <input id="batch-id" name="batchId" type="text" pattern="SM-\d{4}-[A-Z]{2}" placeholder="SM-2026-OK" required>
+
+            <label for="species">Species</label>
+            <select id="species" name="species" required>
+              <optgroup label="Hardwood">
+                <option value="quercus-robur" selected>English oak</option>
+                <option value="betula-pendula">Silver birch</option>
+              </optgroup>
+              <optgroup label="Softwood">
+                <option value="pinus-sylvestris">Scots pine</option>
+                <option value="pseudotsuga-menziesii">Douglas fir</option>
+              </optgroup>
+            </select>
+
+            <label for="diameter">Mean trunk diameter (cm)</label>
+            <input id="diameter" name="diameter" type="number" min="5" max="250" step="0.5" value="48.5">
+
+            <label for="felled">Felled on</label>
+            <input id="felled" name="felledOn" type="date" value="2026-11-20">
+
+            <label for="moisture">Moisture (%)</label>
+            <input id="moisture" name="moisture" type="range" min="0" max="40" value="14" aria-describedby="moisture-hint">
+            <small id="moisture-hint">Target band is 10&ndash;15&nbsp;%.</small>
+
+            <label for="contact">Grader e-mail</label>
+            <input id="contact" name="contact" type="email" placeholder="grader@example.com">
+          </fieldset>
+
+          <fieldset>
+            <legend>Treatment</legend>
+            <label><input type="checkbox" name="treatment" value="kiln" checked> Kiln dried</label>
+            <label><input type="checkbox" name="treatment" value="pressure"> Pressure treated</label>
+            <label><input type="radio" name="finish" value="rough" checked> Rough sawn</label>
+            <label><input type="radio" name="finish" value="planed"> Planed all round</label>
+          </fieldset>
+
+          <label for="notes">Notes</label>
+          <textarea id="notes" name="notes" rows="4" cols="60" maxlength="500" spellcheck="true">Minor shakes on two boards; see photos.</textarea>
+
+          <input type="hidden" name="yard" value="WLY-01">
+          <button type="submit" class="btn btn-primary">Log batch</button>
+          <button type="reset" disabled>Clear</button>
+        </form>
+      </section>
+    </main>
+
+    <aside aria-label="Growth ring legend">
+      <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" role="img" aria-labelledby="rings-title">
+        <title id="rings-title">Cross-section of a trunk showing growth rings</title>
+        <defs>
+          <radialGradient id="heartwood" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#8b5a2b"/>
+            <stop offset="100%" stop-color="#d9b38c"/>
+          </radialGradient>
+        </defs>
+        <circle cx="60" cy="60" r="56" fill="url(#heartwood)" stroke="#3b2a1a" stroke-width="4"/>
+        <circle cx="60" cy="60" r="36" fill="none" stroke="#5a3e2b" stroke-dasharray="4 2"/>
+        <path d="M60 4 L60 116 M4 60 Q60 52 116 60" fill="none" stroke="#3b2a1a" stroke-opacity="0.4"/>
+      </svg>
+    </aside>
+
+    <footer>
+      <p>&copy; 2026 Woody Lumber Yard &middot; Data &#x2192; <a href="mailto:stock@example.com">stock@example.com</a></p>
+    </footer>
+
+    <script type="module">
+      // Fetch plot summaries and render one card per plot from the <template>.
+      const API = new URL("/v1/plots", "https://api.example.org");
+      const list = document.querySelector(".plot-list");
+      const tpl = document.getElementById("plot-card");
+
+      async function renderPlots() {
+        const res = await fetch(API, { headers: { Accept: "application/json" } });
+        if (!res.ok) throw new Error(`Plot request failed: ${res.status}`);
+
+        const plots = await res.json();
+        for (const { name, trees = [], canopy } of plots) {
+          const card = tpl.content.cloneNode(true);
+          card.querySelector(".plot-name").textContent = name;
+          card.querySelector(".tree-count").value = trees.length;
+          card.querySelector(".canopy").value = Math.round(canopy * 100);
+          list.append(card);
+        }
+      }
+
+      renderPlots().catch((err) => console.error("[plots]", err));
+    </script>
+  </body>
+</html>

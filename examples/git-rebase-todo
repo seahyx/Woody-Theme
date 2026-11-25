@@ -1,0 +1,41 @@
+pick 3f9a1c2 feat(grading): add wane tolerance to plank grading
+fixup a92f5d1 fixup! feat(grading): add wane tolerance to plank grading
+exec python -m pytest -q tests/test_grading.py
+reword 8b04d7e fix(sensors): clamp negative moisture readings to zero
+edit 51c6e9a refactor(plots): extract survey parser into its own module
+squash 0d7e3b4 refactor(plots): tidy imports after the parser move
+drop 6e1d0fa chore(debug): temporary print statements in exporter
+break
+pick c47b2e8 docs(readme): document the sawmill batch export
+pick 2b8c9f3 perf(export): stream CSV rows instead of building a list
+
+# Rebase 9c1e4a7..2b8c9f3 onto 9c1e4a7 (8 commands)
+#
+# Commands:
+# p, pick <commit> = use commit
+# r, reword <commit> = use commit, but edit the commit message
+# e, edit <commit> = use commit, but stop for amending
+# s, squash <commit> = use commit, but meld into previous commit
+# f, fixup [-C | -c] <commit> = like "squash" but keep only the previous
+#                    commit's log message, unless -C is used, in which case
+#                    keep only this commit's message; -c is same as -C but
+#                    opens the editor
+# x, exec <command> = run command (the rest of the line) using shell
+# b, break = stop here (continue rebase later with 'git rebase --continue')
+# d, drop <commit> = remove commit
+# l, label <label> = label current HEAD with a name
+# t, reset <label> = reset HEAD to a label
+# m, merge [-C <commit> | -c <commit>] <label> [# <oneline>]
+#         create a merge commit using the original merge commit's
+#         message (or the oneline, if no original merge commit was
+#         specified); use -c <commit> to reword the commit message
+# u, update-ref <ref> = track a placeholder for the <ref> to be updated
+#                       to this position in the new commits. The <ref> is
+#                       updated at the end of the rebase
+#
+# These lines can be re-ordered; they are executed from top to bottom.
+#
+# If you remove a line here THAT COMMIT WILL BE LOST.
+#
+# However, if you remove everything, the rebase will be aborted.
+#

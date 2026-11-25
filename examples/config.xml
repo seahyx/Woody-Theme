@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="inventory-report.xsl"?>
+<!-- config.xml — export and grading configuration for the fictional woody-inventory service. -->
+<!-- Demonstrates XML: declaration, processing instruction, DOCTYPE with internal entities, default and prefixed namespaces, attributes, self-closing tags, entity and character references, CDATA, comments and mixed content. -->
+<!DOCTYPE inventory [
+  <!ENTITY site "Northern Ridge Woodland">
+  <!ENTITY unit-dbh "cm">
+  <!ENTITY licence "&#169; 2026 Woody Inventory contributors">
+]>
+<inventory xmlns="https://schemas.example.com/woody/inventory/2"
+           xmlns:geo="https://schemas.example.com/woody/geo/1"
+           version="2.4.1"
+           generated='2026-11-26T08:15:30Z'>
+  <site id="SITE-NORTH" certified="true">
+    <name>&site;</name>
+    <geo:point geo:lat="54.401838" geo:lon="-2.966417" geo:elevation="212.5"/>
+    <geo:boundary srs="EPSG:4326">54.41 -2.98 54.39 -2.95</geo:boundary>
+    <manager/>
+  </site>
+
+  <species-list>
+    <species code="QURO" native="true">
+      <common>English oak</common>
+      <latin>Quercus robur</latin>
+      <density unit="kg/m&#179;">720</density>
+    </species>
+    <species code="PISY" native="true">
+      <common>Scots pine</common>
+      <latin>Pinus sylvestris</latin>
+      <density unit="kg/m&#xB3;">550</density>
+    </species>
+    <species code='PSME' native='false'>
+      <common>Douglas fir</common>
+      <latin>Pseudotsuga menziesii</latin>
+      <density unit="kg/m&#179;">530</density>
+    </species>
+  </species-list>
+
+  <plots>
+    <plot id="P-001" surveyed="2026-04-12" area-m2="400">
+      <tree tag="1001" species="QURO" dbh="64.2" height="23.1"/>
+      <tree tag="1002" species="PISY" dbh="41.7" height="26.0" felled='false' />
+      <!-- Mixed content: text interleaved with inline elements and references -->
+      <note>Stream buffer &amp; fence line sit &lt; 5 m from the <em>north</em> edge; all DBH values are in &unit-dbh;.</note>
+    </plot>
+    <plot id="P-002" surveyed="2026-04-13" area-m2="400">
+      <tree tag="2001" species="PSME" dbh="72.9" height="38.5" felled="true"/>
+      <note>Tree <ref tag="2001"/> was felled for batch <batch-ref>SB-2026-014</batch-ref> after "storm damage".</note>
+    </plot>
+  </plots>
+
+  <sawmill>
+    <batch id="SB-2026-014" received="2026-05-02T07:45:00+01:00" kiln-dried="true">
+      <grading rule="width &gt;= 150 mm &amp;&amp; knots &lt;= 2/m" grade="A" count="96"/>
+      <grading rule="width &gt;= 100 mm" grade="B" count="61"/>
+      <grading rule="otherwise" grade="C" count="19"/>
+      <grading rule="moisture &gt; 19.5 %" grade="reject" count="8"/>
+    </batch>
+  </sawmill>
+
+  <export format="csv" delimiter="," quote='"' compress="false">
+    <path>/var/lib/woody/exports</path>
+    <url>https://inventory.example.com/api/v2/exports?site=SITE-NORTH&amp;format=csv</url>
+    <filter><![CDATA[species == "Quercus robur" && dbh_cm > 40 && plot != 'P-003']]></filter>
+    <row-template><![CDATA[<tr><td>{tag}</td><td>{species}</td><td>{dbh_cm}</td></tr>]]></row-template>
+  </export>
+
+  <footer>Report for &site; &#8212; &licence;. All measurements are metric.</footer>
+</inventory>

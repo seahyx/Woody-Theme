@@ -1,0 +1,121 @@
+% latex.tex: a short survey report for the fictional Woody Lumber Yard, used to preview the Woody theme's LaTeX highlighting.
+% Demonstrates: \documentclass, \usepackage with options, \newcommand with arguments, title block, sectioning, text formatting, itemize/enumerate, inline and display maths (equation, align) with \label/\ref, fractions, sums, Greek letters, a tabular inside table, a figure placeholder, \cite with thebibliography, \verb and % comments.
+
+\documentclass[11pt, a4paper]{article}
+
+% ---------------------------------------------------------------------------
+% Preamble
+% ---------------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[british]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[colorlinks=true, linkcolor=teal, urlcolor=brown]{hyperref}
+
+% Units and species names are typeset consistently through these macros.
+\newcommand{\unit}[1]{\,\mathrm{#1}}
+\newcommand{\species}[2]{#1 (\emph{#2})}
+\newcommand{\dbh}{\ensuremath{d_{1.3}}}
+\renewcommand{\arraystretch}{1.2}
+
+\title{Autumn Stand Survey\\\large Woody Lumber Yard, North Ridge}
+\author{Plot Team A \and Plot Team B}
+\date{26 November 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We report diameter, height and moisture measurements for four survey plots and estimate the standing volume available for the winter harvest.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+The north ridge carries mixed stands of \species{English oak}{Quercus robur}, \species{Scots pine}{Pinus sylvestris} and \species{silver birch}{Betula pendula}. Plot N-3 was flagged as \textbf{overcrowded} in the spring inspection, which motivates the volume estimate in Section~\ref{sec:method}. Raw exports were produced with \texttt{woody-survey} using the flag \verb|--format=csv|, and the standard method follows \cite{forest-mensuration}.
+
+\subsection{Objectives}
+
+\begin{itemize}
+  \item Measure \dbh{} and total height for every stem in each plot.
+  \item Estimate standing volume per hectare.
+  \item Identify plots exceeding the target basal area of $30\unit{m^2/ha}$.
+\end{itemize}
+
+\section{Method}
+\label{sec:method}
+
+Each plot is a circle of radius $r = 12.6\unit{m}$, giving an area $A = \pi r^2 \approx 0.05\unit{ha}$. For a stem with diameter $d_i$ (in metres) the basal area is
+\begin{equation}
+  g_i = \frac{\pi}{4} d_i^{2},
+  \label{eq:basal}
+\end{equation}
+and the plot basal area per hectare is the scaled sum of Equation~\eqref{eq:basal}:
+\begin{equation}
+  G = \frac{1}{A} \sum_{i=1}^{n} g_i = \frac{\pi}{4A} \sum_{i=1}^{n} d_i^{2}.
+  \label{eq:plot-basal}
+\end{equation}
+
+Stem volume uses a form factor $\phi$ and height $h_i$; moisture content $\mu$ is the ratio of water mass to oven-dry mass:
+\begin{align}
+  V_i &= \phi \, g_i \, h_i, & \phi &\in [0.40, 0.55] \label{eq:volume} \\
+  \mu &= \frac{m_\text{wet} - m_\text{dry}}{m_\text{dry}} \times 100\,\%. \label{eq:moisture}
+\end{align}
+
+Growth between surveys is modelled as $d(t) = d_0 \, e^{\lambda t}$ with $\lambda \approx 0.018\unit{yr^{-1}}$ for pine and $\sigma_\lambda = 0.004$.
+
+\begin{enumerate}
+  \item Stake the plot centre and record GPS coordinates.
+  \item Measure \dbh{} at $1.3\unit{m}$ above ground on the uphill side.
+  \item Compute $G$ from \eqref{eq:plot-basal} and $V$ from \eqref{eq:volume}.
+\end{enumerate}
+
+\section{Results}
+\label{sec:results}
+
+Table~\ref{tab:plots} summarises the four plots. Only N-3 exceeds the target, with $G = 34.7\unit{m^2/ha}$, roughly $16\,\%$ above the threshold.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Summary of north ridge plots (week 47).}
+  \label{tab:plots}
+  \begin{tabular}{l l r r r}
+    \toprule
+    Plot & Dominant species & Stems & $\bar{d}$ (cm) & $G$ (m$^2$/ha) \\
+    \midrule
+    N-1 & \emph{Quercus robur}      & 18 & 71.4 & 27.9 \\
+    N-2 & \emph{Betula pendula}     & 41 & 22.1 & 19.6 \\
+    N-3 & \emph{Pinus sylvestris}   & 63 & 38.9 & \textbf{34.7} \\
+    N-4 & \emph{Pseudotsuga menziesii} & 22 & 54.0 & 29.3 \\
+    \midrule
+    \multicolumn{2}{l}{Total / mean} & 144 & 46.6 & 27.9 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+  \centering
+  % Placeholder frame until the ring photograph is scanned.
+  \fbox{\rule{0pt}{4cm}\rule{0.6\textwidth}{0pt}}
+  \caption{Cross-section of an \emph{English oak} log from plot N-1 showing 212 growth rings.}
+  \label{fig:rings}
+\end{figure}
+
+\section{Conclusion}
+
+Plot N-3 should be thinned this winter; removing 14 pines reduces $G$ by about $\Delta G \approx 6.2\unit{m^2/ha}$ (see Figure~\ref{fig:rings} and \cite{kiln-schedules} for drying the resulting timber). Further details are available at \url{https://docs.example.org/woody/survey-2026}.
+
+\begin{thebibliography}{9}
+  \bibitem{forest-mensuration}
+    A.~Forester and B.~Ranger, \emph{Practical Forest Mensuration}, 3rd ed. Example Press, 2019.
+
+  \bibitem{kiln-schedules}
+    C.~Sawyer, ``Kiln schedules for temperate hardwoods,'' \textit{Journal of Timber Drying}, vol.~12, no.~4, pp.~101--118, 2021.
+\end{thebibliography}
+
+\end{document}

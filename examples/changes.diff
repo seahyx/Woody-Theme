@@ -1,0 +1,67 @@
+diff --git a/src/woody_inventory/grading.py b/src/woody_inventory/grading.py
+index 4e1b7a2..9c03f5d 100644
+--- a/src/woody_inventory/grading.py
++++ b/src/woody_inventory/grading.py
+@@ -11,7 +11,8 @@ GRADES = ("A", "B", "C", "reject")
+ MIN_WIDTH_MM = 150
+ MIN_WIDTH_B_MM = 100
+ MAX_KNOTS_PER_METRE = 2
+-MOISTURE_LIMIT = 20
++MOISTURE_LIMIT_PCT = 19.5
++WANE_TOLERANCE_MM = 6.0
+ SOFTWOODS = {"Pinus sylvestris", "Pseudotsuga menziesii", "Picea abies"}
+ HARDWOODS = {"Quercus robur", "Fagus sylvatica", "Betula pendula"}
+ MIN_THICKNESS_MM = 18
+@@ -25,7 +26,7 @@ class Plank:
+     thickness_mm: float
+     length_m: float
+     knots: int
+-    wane: bool
++    wane_mm: float
+     moisture_pct: float
+     sawn_on: str
+     graded_by: str | None = None
+@@ -41,9 +42,11 @@ def grade(plank: Plank) -> str:
+     """Return the grade letter for a single plank."""
+     if plank.species not in SOFTWOODS | HARDWOODS:
+         raise ValueError(f"unknown species: {plank.species!r}")
+-    if plank.moisture_pct > MOISTURE_LIMIT:
++    if plank.moisture_pct > MOISTURE_LIMIT_PCT:
+         return "reject"
+     density = knots_per_metre(plank)
++    if plank.wane_mm > WANE_TOLERANCE_MM:
++        return "C"
+     if plank.width_mm >= MIN_WIDTH_MM and density <= MAX_KNOTS_PER_METRE:
+         return "A"
+     if plank.width_mm >= MIN_WIDTH_B_MM:
+@@ -57,5 +60,7 @@ def grade_batch(planks: list[Plank]) -> dict[str, int]:
+     """Count planks per grade for one sawmill batch."""
+     counts = {name: 0 for name in GRADES}
+     for plank in planks:
+-        counts[grade(plank)] += 1
++        result = grade(plank)
++        counts[result] += 1
++        log.debug("graded plank", extra={"batch": plank.batch, "grade": result})
+     return counts
+diff --git a/tests/test_grading.py b/tests/test_grading.py
+index b72d0e8..3a6f1c9 100644
+--- a/tests/test_grading.py
++++ b/tests/test_grading.py
+@@ -9,7 +9,7 @@ def make_plank(**overrides):
+         "thickness_mm": 32.0,
+         "length_m": 3.6,
+         "knots": 4,
+-        "wane": False,
++        "wane_mm": 0.0,
+         "moisture_pct": 14.2,
+         "sawn_on": "2026-05-02",
+     }
+@@ -28,3 +28,8 @@ def test_wet_plank_is_rejected():
+ def test_batch_counts_every_grade():
+     planks = [make_plank(), make_plank(width_mm=120.0), make_plank(moisture_pct=30.0)]
+     assert grade_batch(planks) == {"A": 1, "B": 1, "C": 0, "reject": 1}
++
++
++def test_wide_wane_downgrades_to_c():
++    plank = make_plank(wane_mm=8.5)
++    assert grade(plank) == "C"

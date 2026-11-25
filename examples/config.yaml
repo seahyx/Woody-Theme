@@ -1,0 +1,126 @@
+# config.yaml — runtime configuration for the fictional woody-inventory service.
+# Demonstrates YAML: comments, nested and flow mappings, block and flow sequences, anchors/aliases with merge keys, literal and folded block scalars with chomping indicators, quoted strings with escapes, and every core scalar type.
+---
+service:
+  name: woody-inventory
+  version: "2.4.1" # quoted so it stays a string instead of becoming a float
+  owner: ~ # unassigned; ~ is shorthand for null
+  debug: false
+  started_at: 2026-11-26T08:15:30Z
+  maintenance_window: 2026-12-01 02:00:00 +00:00
+
+# Shared blocks, reused below through aliases and merge keys
+defaults:
+  retry: &retry_policy
+    attempts: 5
+    backoff_ms: [250, 500, 1000, 2000, 4000]
+    jitter: 0.25
+  sensor: &sensor_defaults
+    unit: celsius
+    enabled: true
+    alert_below: -.inf
+    alert_above: .inf
+
+server:
+  host: 0.0.0.0
+  port: 8080
+  base_url: "https://inventory.example.com/api/v2"
+  request_timeout_s: 12.5
+  max_body_bytes: 0x100000 # 1 MiB, written in hex
+  upload_dir_mode: 0o750 # octal permission bits (YAML 1.2 notation)
+  cors:
+    allowed_origins: ["https://inventory.example.com", "https://example.org"]
+    allowed_methods: [GET, POST, PATCH, DELETE]
+
+database:
+  primary: &primary_db
+    driver: postgres
+    host: db.internal.example.com
+    port: 5432
+    name: woody
+    user: woody_app
+    password: change-me # placeholder, overridden by WOODY_DB_PASSWORD at runtime
+    pool: { min: 2, max: 20, idle_timeout_s: 300 }
+    retry: *retry_policy
+  replica:
+    <<: *primary_db # inherit everything from primary, then override below
+    host: db-replica.internal.example.com
+    read_only: true
+
+species:
+  - code: QURO
+    common_name: English oak
+    latin_name: Quercus robur
+    grades: [A, B, C]
+  - code: PISY
+    common_name: Scots pine
+    latin_name: Pinus sylvestris
+    grades:
+      - A
+      - B
+  - { code: PSME, common_name: Douglas fir, latin_name: Pseudotsuga menziesii, native: false }
+
+plots:
+  P-001: { area_m2: 400, slope_deg: -4.5, canopy: 0.82, surveyed: 2026-04-12 }
+  P-002: { area_m2: 400, slope_deg: +2.0, canopy: 0.67, surveyed: 2026-04-13 }
+  P-003: { area_m2: 625, slope_deg: 0, canopy: null, surveyed: ~ }
+
+sensors:
+  - id: MOIST-01
+    <<: *sensor_defaults
+    unit: percent
+    plot: P-001
+    alert_above: 19.5
+    calibration: { offset: -0.4, gain: 1.02 }
+  - id: TEMP-02
+    <<: *sensor_defaults
+    plot: P-002
+    alert_below: -5
+    last_reading: .nan # probe returned no data on the last poll
+
+grading:
+  moisture_target_pct: 12.0
+  tolerance_m: 2.5e-3
+  max_stand_volume_m3: 1.2e+4
+  rules:
+    - { grade: A, min_width_mm: 150, max_knots_per_m: 2, allow_wane: false }
+    - { grade: B, min_width_mm: 100, max_knots_per_m: 5, allow_wane: true }
+
+strings:
+  plain: Silver birch stands along the stream
+  single_quoted: 'It''s literal: \n and \t stay exactly as typed'
+  double_quoted: "Tab\there, newline\n, quote \" and backslash \\ in caf\u00e9 notes"
+  windows_path: 'C:\woody\exports'
+
+reports:
+  # | keeps every line break exactly as written
+  footer: |
+    Woody Inventory — internal use only.
+      This indented line keeps its extra spaces.
+    Contact: inventory-team@example.com
+  # > folds single line breaks into spaces; a blank line starts a new paragraph
+  summary: >
+    Plot {plot} holds {count} trees
+    with a mean DBH of {mean_dbh} cm.
+
+    Moisture readings are within tolerance.
+  # |- strips the final newline, handy for SQL handed straight to a driver
+  sql_check: |-
+    SELECT plot_code, COUNT(*) AS trees
+    FROM trees
+    WHERE felled = FALSE
+    GROUP BY plot_code;
+  # >+ keeps the trailing blank line as part of the value
+  banner: >+
+    Scheduled maintenance tonight.
+
+  signature: '— the inventory bot'
+
+logging:
+  level: INFO
+  redact: [password, token, "api_key"]
+  outputs:
+    - stdout
+    - file: /var/log/woody/inventory.log
+      rotate: daily
+      keep: 14

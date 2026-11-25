@@ -1,0 +1,142 @@
+# docker-compose.yml — local development stack for the fictional woody-inventory service.
+# Demonstrates Compose syntax: build args, image tags, ports, map- and list-form environment, env_file, named and bind volumes, depends_on conditions, healthchecks, networks, deploy resources, profiles and a YAML anchor.
+name: woody-inventory
+
+# Extension field: shared logging options, reused with an alias
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+      args:
+        PYTHON_VERSION: "3.12"
+        APP_VERSION: 2.4.1
+    image: registry.example.com/woody/inventory-api:2.4.1
+    container_name: woody-api
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "127.0.0.1:9090:9090" # metrics, only reachable from the host
+    env_file:
+      - .env
+    # Map form: KEY: value
+    environment:
+      APP_ENV: development
+      DATABASE_URL: postgresql://woody:change-me@db:5432/woody
+      REDIS_URL: redis://cache:6379/0
+      LOG_LEVEL: debug
+      WORKERS: 4
+      FEATURE_AUTO_GRADING: "true"
+    volumes:
+      - ./src:/app/src:ro # bind mount for live reload
+      - uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    networks:
+      - backend
+      - frontend
+    logging: *default-logging
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 512M
+        reservations:
+          memory: 256M
+
+  worker:
+    build:
+      context: .
+      target: runtime
+      args:
+        - PYTHON_VERSION=3.12
+    image: registry.example.com/woody/inventory-worker:2.4.1
+    command: ["python", "-m", "woody_inventory.worker", "--queue", "sawmill"]
+    env_file: .env
+    # List form: - KEY=value
+    environment:
+      - APP_ENV=development
+      - DATABASE_URL=postgresql://woody:change-me@db:5432/woody
+      - REDIS_URL=redis://cache:6379/1
+      - GRADING_BATCH_SIZE=250
+      - MOISTURE_ALERT_PCT=19.5
+    volumes:
+      - uploads:/app/uploads:ro
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+      api:
+        condition: service_started
+        restart: true
+    networks: [backend]
+    logging: *default-logging
+    deploy:
+      replicas: 2
+      resources:
+        limits: { cpus: "0.50", memory: 256M }
+    profiles: [workers] # only started with --profile workers
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: woody
+      POSTGRES_PASSWORD: change-me
+      POSTGRES_DB: woody
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U woody -d woody"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - backend
+
+  cache:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "128mb"]
+    volumes:
+      - cache-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 2s
+      retries: 5
+    networks:
+      - backend
+
+volumes:
+  db-data:
+  cache-data:
+  uploads:
+    driver: local
+    labels:
+      com.example.woody.purpose: "plank photos and survey uploads"
+
+networks:
+  backend:
+    driver: bridge
+    internal: true # no outbound internet access for db, cache and worker
+  frontend:
+    driver: bridge

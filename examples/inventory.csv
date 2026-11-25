@@ -1,0 +1,26 @@
+tree_id,common_name,latin_name,plot_code,surveyed_on,dbh_cm,height_m,moisture_pct,felled,notes
+T-1001,English oak,Quercus robur,P-001,2026-04-12,64.2,23.1,41.5,false,
+T-1002,English oak,Quercus robur,P-001,2026-04-12,58.0,21.4,39.8,false,"Ivy on north side, light cover"
+T-1003,Scots pine,Pinus sylvestris,P-001,2026-04-12,41.7,26.0,,false,Moisture probe offline
+T-1004,Silver birch,Betula pendula,P-002,2026-04-13,22.3,17.8,44.1,false,
+T-1005,Douglas fir,Pseudotsuga menziesii,P-002,2026-04-13,72.9,38.5,36.2,true,"Felled for batch SB-2026-014, see ""storm damage"" report"
+T-1006,Common beech,Fagus sylvatica,P-002,2026-04-13,55.4,27.9,38.0,false,
+T-1007,Sweet chestnut,Castanea sativa,P-003,2026-04-15,48.1,19.6,40.7,false,"Spiral grain, check before milling"
+T-1008,European larch,Larix decidua,P-003,2026-04-15,39.0,28.2,33.5,true,
+T-1009,Norway spruce,Picea abies,P-003,2026-04-15,35.6,24.7,,false,
+T-1010,Common ash,Fraxinus excelsior,P-003,2026-04-15,46.3,22.0,37.9,false,"Crown thinned by 30%, suspected ""dieback"""
+T-1011,Wild cherry,Prunus avium,P-004,2026-04-18,31.2,15.4,42.6,false,https://inventory.example.com/trees/T-1011/photos?view=full&size=large
+T-1012,Small-leaved lime,Tilia cordata,P-004,2026-04-18,50.8,20.3,43.2,false,
+T-1013,Hornbeam,Carpinus betulus,P-004,2026-04-18,28.7,14.9,39.1,false,Coppiced in 2019
+T-1014,Field maple,Acer campestre,P-004,2026-04-18,19.5,11.2,41.0,false,
+T-1015,Rowan,Sorbus aucuparia,P-005,2026-04-20,14.8,9.6,45.3,false,"Heavy berry crop, bird activity"
+T-1016,Common alder,Alnus glutinosa,P-005,2026-04-20,33.9,18.4,52.7,false,Stream bank
+T-1017,Common yew,Taxus baccata,P-005,2026-04-20,61.0,12.5,30.4,false,"Veteran tree, do not fell"
+T-1018,Sycamore,Acer pseudoplatanus,P-005,2026-04-20,44.6,21.7,40.2,true,
+T-1019,Western red cedar,Thuja plicata,P-006,2026-04-22,52.3,29.8,35.1,false,
+T-1020,Sitka spruce,Picea sitchensis,P-006,2026-04-22,47.5,31.6,34.8,true,"Windthrow, root plate lifted"
+T-1021,Scots pine,Pinus sylvestris,P-006,2026-04-22,38.2,24.1,32.9,false,
+T-1022,Douglas fir,Pseudotsuga menziesii,P-006,2026-04-22,81.4,41.2,35.6,true,"Grade A logs expected, butt length 6.2 m"
+T-1023,Silver birch,Betula pendula,P-007,2026-04-25,18.9,15.0,,false,
+T-1024,English oak,Quercus robur,P-007,2026-04-25,92.6,24.8,38.3,false,"Labelled ""Old Ridge Oak"" on the site map"
+T-1025,Downy birch,Betula pubescens,P-007,2026-04-25,16.4,13.2,47.0,false,
