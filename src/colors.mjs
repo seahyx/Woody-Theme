@@ -2,21 +2,24 @@
 //
 // Keys whose VS Code default is already derived from a colour set here (e.g. quickInput.background falls back to editorWidget.background) are left out.
 
-import { accent, alpha, ansi, mix, neutral, role, syntax, wood } from './palette.mjs';
+import { accent, alpha, ansi, mix, neutral, role, token, wood } from './palette.mjs';
 
 const { amber, teal, rose, orange, red } = accent;
 
 // symbolIcon.<kind>Foreground, coloured like the matching syntax tokens.
-const symbolIcons = {
-	[syntax.gold]: ['function', 'method', 'constructor'],
-	[orange]: ['class', 'interface', 'struct', 'enumerator', 'typeParameter', 'property', 'key'],
-	[neutral.silver]: ['variable', 'field'],
-	[syntax.magenta]: ['constant', 'enumeratorMember', 'boolean', 'null'],
-	[syntax.blue]: ['keyword'],
-	[syntax.green]: ['string'],
-	[syntax.yellow]: ['number'],
-	[syntax.aqua]: ['module', 'namespace', 'package'],
-};
+const symbolIcons = [
+	[token.function, ['function', 'method', 'constructor', 'operator']],
+	[token.type, ['class', 'object']],
+	[token.struct, ['struct']],
+	[token.abstractType, ['interface', 'enumerator', 'typeParameter']],
+	[token.local, ['variable', 'constant']],
+	[token.text, ['field', 'property', 'event']],
+	[token.key, ['key']],
+	[token.number, ['number', 'enumeratorMember']],
+	[token.keyword, ['keyword', 'boolean', 'null']],
+	[token.string, ['string']],
+	[token.namespace, ['module', 'namespace', 'package']],
+];
 
 export default {
 	// Base
@@ -139,7 +142,7 @@ export default {
 
 	// Editor
 	'editor.background': wood.base,
-	'editor.foreground': role.fg,
+	'editor.foreground': token.text, // matches the plain-text syntax colour, so unscoped text is cream too
 	'editorCursor.foreground': neutral.sand,
 	'editor.lineHighlightBackground': alpha(neutral.white, 0.067),
 	'editor.lineHighlightBorder': role.transparent,
@@ -161,9 +164,9 @@ export default {
 	'editorIndentGuide.activeBackground1': alpha(neutral.sand, 0.4),
 	'editorBracketMatch.background': role.transparent,
 	'editorBracketMatch.border': alpha(amber, 0.365),
-	'editorBracketHighlight.foreground1': syntax.gold,
+	'editorBracketHighlight.foreground1': accent.gold,
 	'editorBracketHighlight.foreground2': rose,
-	'editorBracketHighlight.foreground3': syntax.blue,
+	'editorBracketHighlight.foreground3': accent.blue,
 	'editorBracketHighlight.unexpectedBracket.foreground': red,
 	'editorInlayHint.foreground': alpha(neutral.sand, 0.7),
 	'editorInlayHint.background': alpha(neutral.white, 0.05),
@@ -213,8 +216,8 @@ export default {
 	'diffEditor.removedLineBackground': alpha(role.deleted, 0.1),
 	'merge.currentHeaderBackground': alpha(teal, 0.5),
 	'merge.currentContentBackground': alpha(teal, 0.2),
-	'merge.incomingHeaderBackground': alpha(syntax.blue, 0.5),
-	'merge.incomingContentBackground': alpha(syntax.blue, 0.2),
+	'merge.incomingHeaderBackground': alpha(accent.blue, 0.5),
+	'merge.incomingContentBackground': alpha(accent.blue, 0.2),
 	'gitDecoration.addedResourceForeground': role.added,
 	'gitDecoration.untrackedResourceForeground': role.added,
 	'gitDecoration.modifiedResourceForeground': role.modified,
@@ -222,7 +225,7 @@ export default {
 	'gitDecoration.deletedResourceForeground': role.deleted,
 	'gitDecoration.stageDeletedResourceForeground': role.deleted,
 	'gitDecoration.conflictingResourceForeground': role.conflict,
-	'gitDecoration.submoduleResourceForeground': syntax.blue,
+	'gitDecoration.submoduleResourceForeground': accent.blue,
 	'gitDecoration.ignoredResourceForeground': neutral.moss,
 
 	// Panel and terminal
@@ -252,7 +255,7 @@ export default {
 
 	// Symbol icons (outline, breadcrumbs, suggestions)
 	...Object.fromEntries(
-		Object.entries(symbolIcons).flatMap(([color, kinds]) =>
+		symbolIcons.flatMap(([color, kinds]) =>
 			kinds.map((kind) => [`symbolIcon.${kind}Foreground`, color])
 		)
 	),

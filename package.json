@@ -8,6 +8,7 @@
 		"build": "node scripts/build.mjs",
 		"watch": "node --watch scripts/build.mjs",
 		"check": "node scripts/build.mjs --check",
+		"contrast": "node scripts/contrast.mjs",
 		"vscode:prepublish": "npm run build",
 		"package": "vsce package"
 	},

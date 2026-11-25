@@ -15,6 +15,7 @@ prek = ">=0.5.7,<0.6"
 [tasks]
 build = { cmd = "npm run build", description = "Regenerate themes/Woody-color-theme.json" }
 watch = { cmd = "npm run watch", description = "Regenerate the theme on every save" }
+contrast = { cmd = "npm run contrast", description = "Compare syntax colours with Visual Studio 2022 Dark" }
 deps = { cmd = "npm ci", inputs = ["package-lock.json"], outputs = ["node_modules/.package-lock.json"], description = "Install the npm devDependencies (vsce, semantic-release)" }
 package = { cmd = "npm run package", depends-on = ["deps"], description = "Build the .vsix" }
 lint = { cmd = "prek run --all-files", description = "Run every prek hook on all files" }
