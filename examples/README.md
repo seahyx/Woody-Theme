@@ -23,7 +23,8 @@ Most formats have built-in highlighting. These need an extension:
 The colour rules follow Visual Studio 2022 Dark. The `token` roles in `src/palette.mjs` explain each one.
 
 - **Keywords and control flow.** Declaration words (`class`, `const`, `int`, `true`, `this`) are the dimmest code colour. Flow words (`if`, `return`, `throw`, `await`, `import`) are split off and brighter.
-- **Names.** Locals and parameters are tinted sand. Fields and properties stay plain text. Namespaces and labels are a step dimmer. Functions are the brightest colour after plain text.
+- **Bold.** Bold follows Solarized Dark: whatever the grammar scopes as storage is bold. That covers declaration words (`class`, `function`, `def`, `let`), modifiers (`public`, `static`) and built-in types (`int`, `void`). Markdown headings and bold text are bold, but setext headings and inline code are not.
+- **Names.** Locals and parameters are the same neutral white as the workbench text. Fields and properties stay plain text, a warmer cream. Namespaces and labels are a step dimmer. Functions are the brightest colour after plain text.
 - **Types.** Classes are aqua, structs are a lighter mint, and interfaces, enums and type parameters are pale seafoam. Built-in primitives such as `int` stay keywords.
 - **Literals.** Strings are green, and escapes and placeholders inside them are a brighter lime. Numbers and enum members are yellow.
 - **Regular expressions.** Character classes, anchors and quantifiers, and groups each get their own accent inside the string colour.

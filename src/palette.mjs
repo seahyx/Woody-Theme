@@ -75,10 +75,12 @@ export const accent = {
 /**
  * Syntax highlighting hues. Each keeps Woody's hue but has its lightness set to the tier Visual Studio 2022 Dark gives the matching role (see `token` below).
  * VS's neutrals (text, operators, comments) are pure grey because its background is grey. Woody's are tinted towards the wood at the same lightness, so plain code reads warm.
- * Lightness and chroma are what separate the roles that share a warm hue: amber functions, yellow numbers, orange keys and wheat locals.
+ * Locals are the exception: they are the untinted white of the workbench text, so the names you work with most match the rest of the VS Code UI.
+ * Lightness and chroma are what separate the roles that share a warm hue: amber functions, yellow numbers and orange keys.
  */
 export const syntax = {
 	cream: '#e9e0d4', // plain text
+	white: '#e1e0e0', // locals: role.fg (white at 87%) composited on wood.base, the same white as the workbench text
 	dimCream: '#cec2b5',
 	ash: '#beaea1',
 	greyWarm: '#9c9085',
@@ -88,7 +90,6 @@ export const syntax = {
 	rose: '#e798be',
 	magenta: '#f471aa',
 	gold: '#ffb272',
-	sand: '#e4d49c',
 	aqua: '#4ec9b0',
 	mint: '#58dcca',
 	seafoam: '#a9e3cf',
@@ -159,14 +160,14 @@ export const role = {
 //
 // Modelled on Visual Studio 2022 Dark: Roslyn's VisualStudio2019.xml colour scheme (the "Enhanced" classifications VS 2022 ships) and cpptools' "Visual Studio 2019 Dark" theme.
 // VS sets brightness by how much a token needs to be read. Names you chose and plain text are brightest (11–12:1). Keywords are the dimmest code colour (5.7:1): they are frequent and predictable, so you recognise their shape instead of reading them. Comments and markup recede furthest (4–5.5:1).
-// Hue says what kind of thing a token is (blue language words, teal types, yellow verbs, warm literals), and colour also says where a name lives: locals and parameters are tinted, members stay plain, namespaces go dim.
+// Hue says what kind of thing a token is (blue language words, teal types, yellow verbs, warm literals), and colour also says where a name lives: locals and parameters are a neutral white, members stay warm cream, namespaces go dim.
 // Each entry gives the VS colour and its contrast on VS's #1e1e1e. `npm run contrast` prints Woody's own ratios on #1f1614 and the closest pairs.
 
 export const token = {
 	/** Plain text and members: fields, properties, events, constants. VS #dcdcdc (12.2:1). Most identifiers in an expression are member accesses, so leaving them uncoloured cuts the noise and makes every coloured token mean something. Woody's plain text is a warm cream rather than grey. */
 	text: syntax.cream,
-	/** Locals and parameters. VS #9cdcfe (11.2:1). Names scoped to the code in front of you, nearly as bright as text so data flow reads easily, and tinted so they separate from members. */
-	local: syntax.sand,
+	/** Locals and parameters. VS #9cdcfe (11.2:1). Names scoped to the code in front of you, as bright as text so data flow reads easily. VS tints them blue; Woody keeps them the neutral white of the workbench text, so variables match the rest of the UI and stay a cooler step from the warm cream members. */
+	local: syntax.white,
 	/** Functions, methods, overloaded operators. VS #dcdcaa (11.8:1). The verbs, kept bright so call sites are easy to scan for. */
 	function: syntax.gold,
 	/** Escapes and format placeholders inside strings. VS #ffd68f (12.1:1). Brighter than the surrounding string, because these characters change what the string means. */

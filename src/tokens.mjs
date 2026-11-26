@@ -1,6 +1,8 @@
 // Syntax highlighting: TextMate token rules and semantic token rules.
 //
 // Every colour comes from the `token` roles in src/palette.mjs, which follow Visual Studio 2022 Dark. This file only decides which scopes play which role.
+// Bold follows VS Code's built-in Solarized Dark instead (see "Bold" below).
+// Colour and font style resolve separately: a rule that sets only one of them leaves the other to whichever rule matches next.
 // When two rules match a token, the one with the more specific selector wins, so the order of rules below only matters for identical selectors.
 // The build warns about those, so every selector appears at most once per property.
 
@@ -28,6 +30,17 @@ export const tokenColors = [
 	),
 	rule('Comments', 'comment', fg(token.comment)),
 	rule('Invalid', 'invalid', fg(token.invalid)),
+
+	// --- Bold -------------------------------------------------------------
+	// Solarized Dark's rules. Everything a grammar scopes as storage is bold: declaration words (class, function, def, let, const), modifiers (public, static, async) and built-in types (int, void).
+	// Control flow, operators and language constants stay regular. So do the names a declaration introduces, which some grammars nest inside the storage scope.
+	// Markdown headings and bold text are bold too (see Markup), except setext headings and inline code.
+	rule('Storage', 'storage', { fontStyle: 'bold' }),
+	rule(
+		'Declared names',
+		['entity.name.class', 'entity.name.type', 'entity.name.namespace', 'entity.name.scope-resolution'],
+		{ fontStyle: '' }
+	),
 
 	// --- Keywords ---------------------------------------------------------
 	// Declaration keywords, modifiers, built-in primitive types and word-like operators are all "language words" in VS, so they share the keyword colour.
@@ -384,11 +397,12 @@ export const tokenColors = [
 
 	// --- Markup / Markdown -----------------------------------------------
 	rule('Headings', ['markup.heading', 'header'], { foreground: token.keyword, fontStyle: 'bold' }),
+	rule('Setext headings', 'markup.heading.setext', { fontStyle: '' }), // underlined with === or ---, as in Solarized Dark
 	rule('Bold', 'markup.bold', { foreground: token.keyword, fontStyle: 'bold' }),
 	rule('Italic', 'markup.italic', { foreground: token.control, fontStyle: 'italic' }),
 	rule('Strikethrough', 'markup.strikethrough', { fontStyle: 'strikethrough' }),
 	rule('Underline', 'markup.underline', { fontStyle: 'underline' }),
-	rule('Inline code', 'markup.inline.raw', fg(token.string)),
+	rule('Inline code', 'markup.inline.raw', { foreground: token.string, fontStyle: '' }), // regular even inside a bold span or heading
 	rule('Quote markers', 'punctuation.definition.quote.begin.markdown', fg(token.comment)),
 	rule('List markers', 'punctuation.definition.list.begin.markdown', fg(token.keyword)),
 	rule('Link URLs', 'markup.underline.link', fg(token.keyword)),
