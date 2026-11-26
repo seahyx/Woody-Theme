@@ -40,7 +40,7 @@ class Species(Enum):
 
 
 class Defect(IntFlag):
-    """Bit flags for defects found while grading a plank; combine them with ``|``."""
+    """Bit flags for defects found while grading a plank; combine them with `|`."""
 
     NONE = 0
     KNOT = auto()
@@ -57,7 +57,7 @@ class Tree:
         tree_id: Four-digit number from the trunk tag.
         species: Recorded species.
         dbh_cm: Diameter at breast height (1.3 m), in centimetres.
-        height_m: Total height in metres, or ``None`` if not yet measured.
+        height_m: Total height in metres, or `None` if not yet measured.
     """
 
     tree_id: int
@@ -73,10 +73,10 @@ class Tree:
 
     @classmethod
     def from_tag(cls, tag: str, dbh_cm: float) -> Tree:
-        """Build a tree from a trunk tag such as ``"PLOT-07/QR-0042@24.5m"``.
+        """Build a tree from a trunk tag such as `"PLOT-07/QR-0042@24.5m"`.
 
         Raises:
-            ValueError: If the tag does not match ``TREE_TAG_RE``.
+            ValueError: If the tag does not match `TREE_TAG_RE`.
         """
         if (match := TREE_TAG_RE.match(tag.strip())) is None:
             raise ValueError(f"Unrecognised tree tag: {tag!r}")
@@ -94,7 +94,7 @@ class Sensor(Protocol):
 
 
 class MoistureProbe:
-    """Pin-type moisture meter embedded in a drying stack; satisfies ``Sensor`` structurally, without inheriting from it."""
+    """Pin-type moisture meter embedded in a drying stack; satisfies `Sensor` structurally, without inheriting from it."""
 
     def __init__(self, sensor_id: str, baseline_pct: float = 12.0) -> None:
         self.sensor_id = sensor_id
@@ -108,7 +108,7 @@ class MoistureProbe:
 
     @staticmethod
     def is_kiln_dry(reading: float) -> bool:
-        """Return True if ``reading`` is a plausible kiln-dry moisture value."""
+        """Return True if `reading` is a plausible kiln-dry moisture value."""
         return 0 < reading <= MAX_MOISTURE_PCT
 
 
@@ -119,17 +119,17 @@ class Ledger(Generic[T]):
         self.items: list[T] = []
 
     def add(self, item: T) -> Ledger[T]:
-        """Append ``item`` and return the ledger so calls can be chained."""
+        """Append `item` and return the ledger so calls can be chained."""
         self.items.append(item)
         return self
 
     def where(self, predicate: Callable[[T], bool]) -> Iterator[T]:
-        """Lazily yield only the items for which ``predicate`` returns True."""
+        """Lazily yield only the items for which `predicate` returns True."""
         yield from (item for item in self.items if predicate(item))
 
 
 def timed(label: str) -> Callable[[Callable[..., T]], Callable[..., T]]:
-    """Decorator factory that prints how long each call to the wrapped function takes, prefixed with ``label``."""
+    """Decorator factory that prints how long each call to the wrapped function takes, prefixed with `label`."""
 
     def decorator(func: Callable[..., T]) -> Callable[..., T]:
         calls = 0
@@ -151,7 +151,7 @@ def timed(label: str) -> Callable[[Callable[..., T]], Callable[..., T]]:
 
 @timed("grading")
 def grade_plank(length_mm: int, defects: Defect) -> str:
-    """Return ``"prime"``, ``"select"``, ``"common"`` or ``"firewood"`` for a plank of the given length and defects."""
+    """Return `"prime"`, `"select"`, `"common"` or `"firewood"` for a plank of the given length and defects."""
     assert length_mm > 0, "plank length must be positive"
     if defects is Defect.NONE and length_mm >= 2_400:
         return "prime"
@@ -163,7 +163,7 @@ def grade_plank(length_mm: int, defects: Defect) -> str:
 
 
 def describe(record: object) -> str:
-    """Return a one-line summary of a ``Tree``, a batch mapping, a coordinate pair, or anything else."""
+    """Return a one-line summary of a `Tree`, a batch mapping, a coordinate pair, or anything else."""
     match record:
         case Tree(species=Species.ENGLISH_OAK, dbh_cm=dbh) if dbh >= 80:
             return f"Veteran oak, {dbh:.0f} cm DBH — protected"
@@ -191,7 +191,7 @@ def kiln_session(kiln_id: int) -> Iterator[dict[str, float]]:
 
 
 async def poll_sensors(sensors: Sequence[Sensor], *, retries: int = 3) -> dict[str, float]:
-    """Read every sensor concurrently, retrying the whole sweep up to ``retries`` times on transient failures.
+    """Read every sensor concurrently, retrying the whole sweep up to `retries` times on transient failures.
 
     Raises:
         RuntimeError: If every attempt fails.
