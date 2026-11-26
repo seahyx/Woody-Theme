@@ -20,7 +20,7 @@ Most formats have built-in highlighting. These need an extension:
 
 ## What to look at
 
-The colour rules follow Visual Studio 2022 Dark. The `token` roles in `src/palette.mjs` explain each one.
+The `token` roles in `src/palette.mjs` explain each colour rule.
 
 - **Keywords and control flow.** Declaration words (`class`, `const`, `int`, `true`, `this`) are the dimmest code colour. Flow words (`if`, `return`, `throw`, `await`, `import`) are split off and brighter.
 - **Bold.** Bold follows Solarized Dark: whatever the grammar scopes as storage is bold. That covers declaration words (`class`, `function`, `def`, `let`), modifiers (`public`, `static`) and built-in types (`int`, `void`). Markdown headings and bold text are bold, but setext headings and inline code are not.

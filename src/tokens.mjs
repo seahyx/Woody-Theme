@@ -1,7 +1,7 @@
 // Syntax highlighting: TextMate token rules and semantic token rules.
 //
-// Every colour comes from the `token` roles in src/palette.mjs, which follow Visual Studio 2022 Dark. This file only decides which scopes play which role.
-// Bold follows VS Code's built-in Solarized Dark instead (see "Bold" below).
+// Every colour comes from the `token` roles in src/palette.mjs. This file only decides which scopes play which role.
+// Bold follows VS Code's built-in Solarized Dark (see "Bold" below).
 // Colour and font style resolve separately: a rule that sets only one of them leaves the other to whichever rule matches next.
 // When two rules match a token, the one with the more specific selector wins, so the order of rules below only matters for identical selectors.
 // The build warns about those, so every selector appears at most once per property.
@@ -43,7 +43,7 @@ export const tokenColors = [
 	),
 
 	// --- Keywords ---------------------------------------------------------
-	// Declaration keywords, modifiers, built-in primitive types and word-like operators are all "language words" in VS, so they share the keyword colour.
+	// Declaration keywords, modifiers, built-in primitive types and word-like operators are all language words, so they share the keyword colour.
 	rule(
 		'Keywords and storage',
 		[
@@ -177,7 +177,7 @@ export const tokenColors = [
 	),
 
 	// --- Types ------------------------------------------------------------
-	// Named types are aqua; built-in primitives stay keywords (above), as `int` is in VS. Value types and abstract types are steps of the same family.
+	// Named types are aqua; built-in primitives such as `int` stay keywords (above). Value types and abstract types are steps of the same family.
 	rule(
 		'Types',
 		[
@@ -253,7 +253,7 @@ export const tokenColors = [
 			'string.value',
 			'meta.preprocessor.string',
 			'meta.embedded.assembly',
-			// CSS property values read as text, as in VS.
+			// CSS property values take the string colour.
 			'support.constant.property-value',
 			'support.constant.font-name',
 			'support.constant.media-type',
@@ -293,7 +293,7 @@ export const tokenColors = [
 	),
 
 	// --- Regular expressions ---------------------------------------------
-	// VS gives the regex micro-language its own saturated accents: classes, anchors and quantifiers, and groups each read at a glance.
+	// The regex micro-language gets its own saturated accents: classes, anchors and quantifiers, and groups each read at a glance.
 	rule('Regex', 'string.regexp', fg(token.string)),
 	rule(
 		'Regex character classes',
@@ -336,7 +336,7 @@ export const tokenColors = [
 	),
 
 	// --- Doc comments -----------------------------------------------------
-	// Tags recede below the comment text; the names they document are lifted a little, like attribute values in VS's XML doc comments.
+	// Tags recede below the comment text; the names they document are lifted a little so they are easy to find.
 	rule(
 		'Doc comment tags',
 		[
@@ -362,13 +362,13 @@ export const tokenColors = [
 	),
 
 	// --- HTML / XML -------------------------------------------------------
-	// Tag names are language words, as in VS. Attribute names are keys (above), and entities are escapes.
+	// Tag names are language words, so they take the keyword colour. Attribute names are keys (above), and entities are escapes.
 	rule('Tags', 'entity.name.tag', fg(token.keyword)),
 	rule('Tag brackets', 'punctuation.definition.tag', fg(token.docTag)),
 	rule('PHP tags', ['punctuation.section.embedded.begin.php', 'punctuation.section.embedded.end.php'], fg(token.keyword)),
 
 	// --- CSS / SCSS / Less -----------------------------------------------
-	// Selectors get the function hue, mirroring VS's selector tan sitting beside its method yellow.
+	// Selectors take the function colour, so each rule's target stands out from the keys and values inside it.
 	rule(
 		'CSS selectors',
 		[
@@ -471,7 +471,7 @@ export const semanticTokenColors = {
 	numberLiteral: token.number,
 	stringLiteral: token.string,
 
-	// C# (Roslyn). These are the classifications VS 2022 itself colours, so they map one to one.
+	// C# (Roslyn).
 	controlKeyword: token.control,
 	operatorOverloaded: token.function,
 	extensionMethod: token.function,

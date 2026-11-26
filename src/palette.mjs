@@ -73,8 +73,8 @@ export const accent = {
 };
 
 /**
- * Syntax highlighting hues. Each keeps Woody's hue but has its lightness set to the tier Visual Studio 2022 Dark gives the matching role (see `token` below).
- * VS's neutrals (text, operators, comments) are pure grey because its background is grey. Woody's are tinted towards the wood at the same lightness, so plain code reads warm.
+ * Syntax highlighting hues. Each role's lightness is set by how much it needs to be read (see `token` below).
+ * The neutrals (text, operators, comments) are tinted towards the wood, so plain code reads warm.
  * Locals are the exception: they are the untinted white of the workbench text, so the names you work with most match the rest of the VS Code UI.
  * Lightness and chroma are what separate the roles that share a warm hue: amber functions, yellow numbers and orange keys.
  */
@@ -158,48 +158,47 @@ export const role = {
 // Syntax roles
 // ---------------------------------------------------------------------------
 //
-// Modelled on Visual Studio 2022 Dark: Roslyn's VisualStudio2019.xml colour scheme (the "Enhanced" classifications VS 2022 ships) and cpptools' "Visual Studio 2019 Dark" theme.
-// VS sets brightness by how much a token needs to be read. Names you chose and plain text are brightest (11–12:1). Keywords are the dimmest code colour (5.7:1): they are frequent and predictable, so you recognise their shape instead of reading them. Comments and markup recede furthest (4–5.5:1).
+// Brightness follows how much a token needs to be read. Names you chose and plain text are brightest. Keywords are the dimmest code colour: they are frequent and predictable, so you recognise their shape instead of reading them. Comments and markup recede furthest.
 // Hue says what kind of thing a token is (blue language words, teal types, yellow verbs, warm literals), and colour also says where a name lives: locals and parameters are a neutral white, members stay warm cream, namespaces go dim.
-// Each entry gives the VS colour and its contrast on VS's #1e1e1e. `npm run contrast` prints Woody's own ratios on #1f1614 and the closest pairs.
+// `npm run contrast` prints each role's contrast on the editor background (#1f1614) and the pairs of roles closest in colour.
 
 export const token = {
-	/** Plain text and members: fields, properties, events, constants. VS #dcdcdc (12.2:1). Most identifiers in an expression are member accesses, so leaving them uncoloured cuts the noise and makes every coloured token mean something. Woody's plain text is a warm cream rather than grey. */
+	/** Plain text and members: fields, properties, events, constants. Most identifiers in an expression are member accesses, so leaving them uncoloured cuts the noise and makes every coloured token mean something. Plain text is a warm cream rather than grey. */
 	text: syntax.cream,
-	/** Locals and parameters. VS #9cdcfe (11.2:1). Names scoped to the code in front of you, as bright as text so data flow reads easily. VS tints them blue; Woody keeps them the neutral white of the workbench text, so variables match the rest of the UI and stay a cooler step from the warm cream members. */
+	/** Locals and parameters. Names scoped to the code in front of you, as bright as text so data flow reads easily. They are the neutral white of the workbench text, so variables match the rest of the UI and stay a cooler step from the warm cream members. */
 	local: syntax.white,
-	/** Functions, methods, overloaded operators. VS #dcdcaa (11.8:1). The verbs, kept bright so call sites are easy to scan for. */
+	/** Functions, methods, overloaded operators. The verbs, kept bright so call sites are easy to scan for. */
 	function: syntax.gold,
-	/** Escapes and format placeholders inside strings. VS #ffd68f (12.1:1). Brighter than the surrounding string, because these characters change what the string means. */
+	/** Escapes and format placeholders inside strings. Brighter than the surrounding string, because these characters change what the string means. */
 	escape: syntax.lime,
-	/** Interfaces, enums, type parameters. VS #b8d7a3 (10.6:1). Abstract types: a lighter, paler step of the type colour. VS uses pale green, which Woody's green strings already own, so Woody uses pale aqua. */
+	/** Interfaces, enums, type parameters. Abstract types: a lighter, paler step of the type colour. Pale aqua rather than pale green, because green belongs to strings. */
 	abstractType: syntax.seafoam,
-	/** Namespaces, packages, modules, labels, globals. VS #c8c8c8 (10.0:1). Qualifiers you read past: a step dimmer than text. */
+	/** Namespaces, packages, modules, labels, globals. Qualifiers you read past: a step dimmer than text. */
 	namespace: syntax.dimCream,
-	/** Numbers, units, enum members, symbols. VS #b5cea8 (9.8:1). Literal values, softened so a numeric table does not shout. Enum members count as named numbers, as VS does for C++ enumerators. */
+	/** Numbers, units, enum members, symbols. Literal values, softened so a numeric table does not shout. Enum members count as named numbers. */
 	number: syntax.yellow,
-	/** Classes, records, delegates, annotations, library types. VS #4ec9b0 (8.2:1). The nouns of the type system. */
+	/** Classes, records, delegates, annotations, library types. The nouns of the type system. */
 	type: syntax.aqua,
-	/** Structs and other value types. VS #86c691 (8.3:1). VS shifts the type hue towards green; Woody's green is taken by strings, so structs step up in lightness instead. */
+	/** Structs and other value types. A lighter step of the type colour rather than a greener one, because green belongs to strings. */
 	struct: syntax.mint,
-	/** Control flow: if, for, return, throw, await, import. VS #d8a0df (8.0:1). Split from the other keywords and brighter than them, so branches and exits stand out when scanning. */
+	/** Control flow: if, for, return, throw, await, import. Split from the other keywords and brighter than them, so branches and exits stand out when scanning. */
 	control: syntax.rose,
-	/** Operators. VS #b4b4b4 (8.0:1). Neutral and just under text, so the operands lead. */
+	/** Operators. Neutral and just under text, so the operands lead. */
 	operator: syntax.ash,
-	/** Strings. VS #d69d85 (7.2:1). Mid-tier: text that is data, set apart by hue rather than brightness. */
+	/** Strings. Mid-tier: text that is data, set apart by hue rather than brightness. */
 	string: syntax.green,
-	/** Keys and attribute names: JSON, YAML, INI, CSS properties, HTML attributes, object keys. VS gives these the local colour, #9cdcfe (11.2:1). Woody keeps its orange, one tier lower so it stays distinct from functions. */
+	/** Keys and attribute names: JSON, YAML, INI, CSS properties, HTML attributes, object keys. Orange, one tier below functions so the two warm hues stay distinct. */
 	key: syntax.orange,
-	/** Macros, and regex anchors and quantifiers. VS #beb7ff (9.1:1) and #f979ae. Macros look like calls but are text substitution, so they get their own colour. One tier lower than VS to stay clear of control flow. */
+	/** Macros, and regex anchors and quantifiers. Macros look like calls but are text substitution, so they get their own colour, a step dimmer than control flow so the two pinks stay distinct. */
 	macro: syntax.magenta,
-	/** Preprocessor directives. VS #9b9b9b (6.0:1). Compile-time and out of band, so neutral and recessive. Neutral grey is Woody's comment colour, so directives are tinted towards the macro colour instead. */
+	/** Preprocessor directives. Compile-time and out of band, so recessive. Grey would read as a comment, so directives are a muted tint of the macro colour. */
 	preprocessor: syntax.mauve,
-	/** Keywords, storage, primitive types, true/false/null, this/self, markup tags. VS #569cd6 (5.65:1). The most frequent and predictable words, so the dimmest code colour: identifiers lead and keywords frame. */
+	/** Keywords, storage, primitive types, true/false/null, this/self, markup tags. The most frequent and predictable words, so the dimmest code colour: identifiers lead and keywords frame. */
 	keyword: syntax.blue,
-	/** Comments. VS #57a64a (5.5:1). Readable, but behind the code. */
+	/** Comments. Readable, but behind the code. */
 	comment: syntax.greyWarm,
-	/** Doc-comment tags, tag brackets, delimiters. VS #608b4e and #808080 (4.2:1). Structure inside prose recedes furthest. Woody keeps it at 4.5:1 or above. */
+	/** Doc-comment tags, tag brackets, delimiters. Structure inside prose recedes furthest, but stays at 4.5:1 or above. */
 	docTag: syntax.greyDeep,
-	/** Invalid code. VS #f44747. */
+	/** Invalid code. */
 	invalid: syntax.red,
 };
